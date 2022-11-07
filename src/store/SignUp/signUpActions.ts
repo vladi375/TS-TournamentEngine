@@ -15,16 +15,25 @@ export const onSignUpActionCreator = (values: FormValues) => {
     try {
       const response = await axios.post(
         'https://ts-tournament-engine.herokuapp.com/api/user',
-        values
+        {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+          nickname: values.nickname,
+          country: values.country,
+        }
       );
+      console.log('response', response);
+
       dispatch({
         type: SIGN_UP_PLAYER_FETCH_SUCCESS,
-        payload: response?.data,
+        payload: values,
       });
     } catch (error: any) {
       dispatch({
         type: SIGN_UP_PLAYER_FETCH_ERROR,
-        payload: error.response?.data,
+        payload: error.response,
       });
     }
   };

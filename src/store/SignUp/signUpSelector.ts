@@ -5,3 +5,8 @@ export const getSignUpLoading = (state: AppStore): boolean =>
 
 export const getUserSignedUp = (state: AppStore): boolean =>
   state.signUp.isUserSignedUp || false;
+
+export const getSignUpErrors = (state: AppStore): string[] =>
+  state.signUp.errors || [];
+
+export const getUserEmail = (state: AppStore): string => state.signUp.email;

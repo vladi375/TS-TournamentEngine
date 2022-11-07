@@ -7,4 +7,5 @@ export interface SignUpState {
   country: string;
   isUserSignedUp: boolean;
   isLoading: boolean;
+  errors: string[];
 }

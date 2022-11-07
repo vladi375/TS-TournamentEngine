@@ -1,6 +1,6 @@
 import { Container, Flex, Box, Image, Text, Heading } from '@chakra-ui/react';
 import React from 'react';
-import { useAppSelector } from '../hooks';
+import { useAppSelector } from '../hooks/hooks';
 import { getUserSignedUp } from '../store/SignUp/signUpSelector';
 
 import logo from './../assets/images/success4.png';
@@ -20,7 +20,7 @@ const MainView = () => {
             <Box p={12} maxWidth='800px'>
               <Image src={logo} boxSize='400px' alt='success' />
               <Heading textAlign={'center'} size={'2xl'} mb={4}>
-                Thank you!
+                Success!
               </Heading>
             </Box>
             <Box>

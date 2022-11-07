@@ -19,6 +19,7 @@ const signUpReducer = (
       return {
         ...state,
         isLoading: true,
+        errors: [],
       };
     case SIGN_UP_PLAYER_FETCH_SUCCESS: {
       return {
@@ -30,11 +31,14 @@ const signUpReducer = (
         country: payload.country,
         isUserSignedUp: true,
         isLoading: false,
+        errors: [],
       };
     }
     case SIGN_UP_PLAYER_FETCH_ERROR:
       return {
         ...state,
+        errors: payload.data.errors,
+        isLoading: false,
       };
 
     default:

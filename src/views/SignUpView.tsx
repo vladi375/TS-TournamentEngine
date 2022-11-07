@@ -26,8 +26,12 @@ import { SignUpValidationSchema } from '../services/validationSchema';
 import { countries, ROUTES } from '../constants';
 
 import { onSignUpActionCreator } from '../store/SignUp/signUpActions';
-import { getUserSignedUp } from '../store/SignUp/signUpSelector';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import {
+  getSignUpErrors,
+  getSignUpLoading,
+  getUserSignedUp,
+} from '../store/SignUp/signUpSelector';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 
 export interface FormValues {
   firstName: string;
@@ -51,6 +55,8 @@ const SignUpView = () => {
   const dispatch = useAppDispatch();
 
   const isUserSignedUp = useAppSelector(getUserSignedUp);
+  const isSignUpLoading = useAppSelector(getSignUpLoading);
+  const errors = useAppSelector(getSignUpErrors);
 
   return (
     <Container maxW={'container.md'} my={14}>
@@ -77,7 +83,6 @@ const SignUpView = () => {
               validationSchema={SignUpValidationSchema}
               onSubmit={(values, actions) => {
                 dispatch(onSignUpActionCreator(values));
-                console.log(values);
               }}
             >
               {(props: FormikProps<FormValues>) => (
@@ -201,14 +206,19 @@ const SignUpView = () => {
                       </FormControl>
                     )}
                   </Field>
+                  {errors && (
+                    <Box mt={6} textAlign={'center'}>
+                      <Text color={'red.500'}>{errors}</Text>
+                    </Box>
+                  )}
                   <Box textAlign={'center'}>
                     <Button
                       colorScheme='teal'
                       variant='outline'
                       width='36'
                       textAlign={'center'}
-                      mt={12}
-                      isLoading={props.isSubmitting}
+                      mt={6}
+                      isLoading={isSignUpLoading ? props.isSubmitting : false}
                       type='submit'
                     >
                       Sign Up

@@ -9,4 +9,5 @@ export const signUpInitialState: SignUpState = {
   country: '',
   isUserSignedUp: false,
   isLoading: false,
+  errors: [],
 };
