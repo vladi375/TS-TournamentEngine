@@ -33,7 +33,7 @@ import {
 } from '../store/SignUp/signUpSelector';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 
-export interface FormValues {
+export interface signUpFormValues {
   firstName: string;
   lastName: string;
   email: string;
@@ -43,7 +43,7 @@ export interface FormValues {
 }
 
 const SignUpView = () => {
-  const initialValues: FormValues = {
+  const initialValues: signUpFormValues = {
     firstName: '',
     lastName: '',
     email: '',
@@ -56,7 +56,7 @@ const SignUpView = () => {
 
   const isUserSignedUp = useAppSelector(getUserSignedUp);
   const isSignUpLoading = useAppSelector(getSignUpLoading);
-  const errors = useAppSelector(getSignUpErrors);
+  const signUpErrors = useAppSelector(getSignUpErrors);
 
   return (
     <Container maxW={'container.md'} my={14}>
@@ -69,7 +69,9 @@ const SignUpView = () => {
           boxShadow='lg'
         >
           <Box textAlign='center'>
-            <Heading mb={4}>Join the game!</Heading>
+            <Heading mb={4} size='lg'>
+              Join the game!
+            </Heading>
           </Box>
           <Box textAlign='center' mb={8}>
             <Text>
@@ -85,7 +87,7 @@ const SignUpView = () => {
                 dispatch(onSignUpActionCreator(values));
               }}
             >
-              {(props: FormikProps<FormValues>) => (
+              {(props: FormikProps<signUpFormValues>) => (
                 <Form>
                   <Field name='firstName'>
                     {({ form, field }: any) => (
@@ -206,9 +208,9 @@ const SignUpView = () => {
                       </FormControl>
                     )}
                   </Field>
-                  {errors && (
+                  {signUpErrors && (
                     <Box mt={6} textAlign={'center'}>
-                      <Text color={'red.500'}>{errors}</Text>
+                      <Text color={'red.500'}>{signUpErrors}</Text>
                     </Box>
                   )}
                   <Box textAlign={'center'}>

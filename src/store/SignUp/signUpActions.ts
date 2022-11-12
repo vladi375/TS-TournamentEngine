@@ -1,15 +1,15 @@
-import { FormValues } from './../../views/SignUpView';
+import { signUpFormValues } from './../../views/SignUpView';
 import { AppDispatch } from './../../App';
 import axios from 'axios';
 
-export const SIGN_UP_PLAYER_FETCH_REQUEST = 'sign-up/FETCH_REQUEST';
-export const SIGN_UP_PLAYER_FETCH_SUCCESS = 'sign-up/FETCH_SUCCESS';
-export const SIGN_UP_PLAYER_FETCH_ERROR = 'sign-up/FETCH_ERROR';
+export const SIGN_UP_USER_FETCH_REQUEST = 'sign-up/FETCH_REQUEST';
+export const SIGN_UP_USER_FETCH_SUCCESS = 'sign-up/FETCH_SUCCESS';
+export const SIGN_UP_USER_FETCH_ERROR = 'sign-up/FETCH_ERROR';
 
-export const onSignUpActionCreator = (values: FormValues) => {
+export const onSignUpActionCreator = (values: signUpFormValues) => {
   return async (dispatch: AppDispatch) => {
     dispatch({
-      type: SIGN_UP_PLAYER_FETCH_REQUEST,
+      type: SIGN_UP_USER_FETCH_REQUEST,
     });
 
     try {
@@ -27,12 +27,12 @@ export const onSignUpActionCreator = (values: FormValues) => {
       console.log('response', response);
 
       dispatch({
-        type: SIGN_UP_PLAYER_FETCH_SUCCESS,
-        payload: values,
+        type: SIGN_UP_USER_FETCH_SUCCESS,
+        payload: response?.data,
       });
     } catch (error: any) {
       dispatch({
-        type: SIGN_UP_PLAYER_FETCH_ERROR,
+        type: SIGN_UP_USER_FETCH_ERROR,
         payload: error.response,
       });
     }

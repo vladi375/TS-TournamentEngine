@@ -3,9 +3,9 @@ import { SignUpState } from './signUpState';
 import { AppAction } from '../types';
 
 import {
-  SIGN_UP_PLAYER_FETCH_REQUEST,
-  SIGN_UP_PLAYER_FETCH_SUCCESS,
-  SIGN_UP_PLAYER_FETCH_ERROR,
+  SIGN_UP_USER_FETCH_REQUEST,
+  SIGN_UP_USER_FETCH_SUCCESS,
+  SIGN_UP_USER_FETCH_ERROR,
 } from './signUpActions';
 
 const signUpReducer = (
@@ -15,26 +15,20 @@ const signUpReducer = (
   const { type, payload } = action;
 
   switch (type) {
-    case SIGN_UP_PLAYER_FETCH_REQUEST:
+    case SIGN_UP_USER_FETCH_REQUEST:
       return {
         ...state,
         isLoading: true,
         errors: [],
       };
-    case SIGN_UP_PLAYER_FETCH_SUCCESS: {
+    case SIGN_UP_USER_FETCH_SUCCESS: {
       return {
-        firstName: payload.firstName,
-        lastName: payload.lastName,
-        email: payload.email,
-        password: payload.password,
-        nickname: payload.nickname,
-        country: payload.country,
         isUserSignedUp: true,
         isLoading: false,
         errors: [],
       };
     }
-    case SIGN_UP_PLAYER_FETCH_ERROR:
+    case SIGN_UP_USER_FETCH_ERROR:
       return {
         ...state,
         errors: payload.data.errors,

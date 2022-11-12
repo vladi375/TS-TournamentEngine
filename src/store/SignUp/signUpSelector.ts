@@ -8,5 +8,3 @@ export const getUserSignedUp = (state: AppStore): boolean =>
 
 export const getSignUpErrors = (state: AppStore): string[] =>
   state.signUp.errors || [];
-
-export const getUserEmail = (state: AppStore): string => state.signUp.email;

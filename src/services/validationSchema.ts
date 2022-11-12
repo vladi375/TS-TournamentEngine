@@ -12,3 +12,10 @@ export const SignUpValidationSchema = Yup.object().shape({
   nickname: Yup.string().max(50, 'Too Long!').required('Nickname is required'),
   country: Yup.string().required('Country is required'),
 });
+
+export const LogInValidationSchema = Yup.object().shape({
+  email: Yup.string().email('Email is invalid').required('Email is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .required('Password is required'),
+});

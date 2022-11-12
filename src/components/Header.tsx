@@ -13,7 +13,10 @@ import { Link as ReachLink } from 'react-router-dom';
 
 import { ROUTES } from '../constants';
 import { useAppSelector } from '../hooks/hooks';
-import { getUserEmail, getUserSignedUp } from '../store/SignUp/signUpSelector';
+import {
+  getLoggedInUserEmail,
+  getUserLoggedIn,
+} from '../store/LogIn/logInSelector';
 
 type NavItemProperties = {
   children: any;
@@ -34,8 +37,8 @@ const NavItem: FC<NavItemProperties> = ({
 export const Header = () => {
   const { colorMode } = useColorMode();
 
-  const isUserSignedUp = useAppSelector(getUserSignedUp);
-  const userEmail = useAppSelector(getUserEmail);
+  const isUserLoggedIn = useAppSelector(getUserLoggedIn);
+  const userEmail = useAppSelector(getLoggedInUserEmail);
 
   return (
     <Box as='header' py={4} bg={colorMode === 'dark' ? 'gray.600' : 'gray.200'}>
@@ -46,7 +49,7 @@ export const Header = () => {
             <NavItem to={ROUTES.MAIN}>Main</NavItem>
             <NavItem to={ROUTES.ABOUT}>About</NavItem>
             <NavItem to={ROUTES.CONTACTS}>Contacts</NavItem>
-            {isUserSignedUp ? (
+            {isUserLoggedIn ? (
               <React.Fragment>
                 <NavItem to={ROUTES.MAIN}>{userEmail}</NavItem>
               </React.Fragment>
