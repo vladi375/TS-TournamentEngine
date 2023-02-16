@@ -16,6 +16,13 @@ export const SignUpValidationSchema = Yup.object().shape({
 export const LogInValidationSchema = Yup.object().shape({
   email: Yup.string().email('Email is invalid').required('Email is required'),
   password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
     .required('Password is required'),
 });
+
+export const ResetPasswordValidationSchema = Yup.object().shape({
+  email: Yup.string().email('Email is invalid').required('Email is required')});
+
+export const SetPasswordValidationSchema = Yup.object().shape({
+  password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], "Passwords don't match!").required("Please confirm your password")
+})

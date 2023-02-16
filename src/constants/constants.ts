@@ -1,9 +1,11 @@
 export const ROUTES = {
   MAIN: '/',
-  SIGNUP: '/signup',
-  LOGIN: '/login',
+  SIGNUP: 'account/signup',
+  LOGIN: 'account/login',
   ABOUT: '/about',
   CONTACTS: '/contact-us',
+  PASSWORD_RESET: "/account/password/reset",
+  PASSWORD_SET: "/account/password/set"
 };
 
 const mainApiUrl = 'https://ts-tournament-engine.herokuapp.com';

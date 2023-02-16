@@ -1,16 +1,16 @@
 import { signUpInitialState } from './signUpInitialState';
 import { SignUpState } from './signUpState';
-import { AppAction } from '../types';
 
 import {
   SIGN_UP_USER_FETCH_REQUEST,
   SIGN_UP_USER_FETCH_SUCCESS,
   SIGN_UP_USER_FETCH_ERROR,
 } from './signUpActions';
+import { AnyAction } from '@reduxjs/toolkit';
 
 const signUpReducer = (
   state = signUpInitialState,
-  action: AppAction
+  action: AnyAction
 ): SignUpState => {
   const { type, payload } = action;
 

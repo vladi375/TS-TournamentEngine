@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   Container,
   Flex,
@@ -8,44 +8,29 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  // FormHelperText,
   Input,
   Button,
   HStack,
   Checkbox,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
-import {
-  Formik,
-  FormikProps,
-  Form,
-  Field,
-  // FieldProps,
-} from 'formik';
-import { LogInValidationSchema } from '../services/validationSchema';
-import { onLogInActionCreator } from '../store/LogIn/logInActions';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { ROUTES } from '../constants';
-import {
-  getLogInErrors,
-  getLogInLoading,
-  getUserLoggedIn,
-} from '../store/LogIn/logInSelector';
-
-export interface logInFormValues {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
+import { Formik, FormikProps, Form, Field } from "formik";
+import { LogInValidationSchema } from "../services/validationSchema";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { ROUTES } from "../constants";
+import LoginRequest from "../models/loginRequest";
+import { useState } from "react";
+import { Login } from "../services/accountService";
+import Error from "../components/Error";
+import { userLoggedIn } from "../store/userSlice";
+import { selectUserLogged } from "./../store/userSlice";
 
 export const LogInView = () => {
-  const initialValues: logInFormValues = {
-    email: '',
-    password: '',
+  const initialValues: LoginRequest = {
+    email: "",
+    password: "",
     rememberMe: false,
   };
-
-  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -53,46 +38,64 @@ export const LogInView = () => {
     navigate(ROUTES.SIGNUP);
   };
 
-  const isLogInLoading = useAppSelector(getLogInLoading);
-  const logInErrors = useAppSelector(getLogInErrors);
-  const isUserLoggedIn = useAppSelector(getUserLoggedIn);
+  const changeRouteToResetPassword = () => {
+    navigate(ROUTES.PASSWORD_RESET);
+  };
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isUserLoggedIn = useAppSelector(selectUserLogged);
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = async (value: LoginRequest) => {
+    setIsLoading(true);
+
+    try {
+      const user = await Login(value);
+      setErrorMessage("");
+      dispatch(userLoggedIn({ ...user }));
+    } catch (error: any) {
+      setErrorMessage(error.message);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
-    <Container maxW={'container.md'} my={14}>
-      <Flex align='center' justifyContent='center'>
+    <Container maxW={"container.md"} my={14}>
+      <Flex align="center" justifyContent="center">
         <Box
           p={12}
-          width={'500px'}
+          width={"500px"}
           borderWidth={1}
           borderRadius={8}
-          boxShadow='lg'
+          boxShadow="lg"
         >
-          <Box textAlign='center'>
-            <Heading mb={6} size='lg'>
+          <Box textAlign="center">
+            <Heading mb={6} size="lg">
               Log in to your account
             </Heading>
           </Box>
-          <HStack spacing='4' justify='center'>
+          <HStack spacing="4" justify="center">
             <Text>Don't have an account?</Text>
             <Button
-              variant='link'
-              colorScheme='teal'
+              variant="link"
+              colorScheme="teal"
               onClick={changeRouteToSignUp}
             >
               Sign up
             </Button>
           </HStack>
-          <Box mt={4} textAlign='left'>
+          <Box mt={4} textAlign="left">
             <Formik
               initialValues={initialValues}
               validationSchema={LogInValidationSchema}
-              onSubmit={(values, actions) => {
-                dispatch(onLogInActionCreator(values));
-              }}
+              onSubmit={async (values) => handleSubmit(values)}
             >
-              {(props: FormikProps<logInFormValues>) => (
+              {(props: FormikProps<LoginRequest>) => (
                 <Form>
-                  <Field name='email'>
+                  <Field name="email">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -100,8 +103,8 @@ export const LogInView = () => {
                       >
                         <FormLabel>Email:</FormLabel>
                         <Input
-                          type='email'
-                          placeholder='test@test.com'
+                          type="email"
+                          placeholder="test@test.com"
                           {...field}
                         />
                         <FormErrorMessage>
@@ -110,7 +113,7 @@ export const LogInView = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='password'>
+                  <Field name="password">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -120,8 +123,8 @@ export const LogInView = () => {
                       >
                         <FormLabel>Password:</FormLabel>
                         <Input
-                          type='password'
-                          placeholder='*******'
+                          type="password"
+                          placeholder="*******"
                           {...field}
                         />
                         <FormErrorMessage>
@@ -130,26 +133,27 @@ export const LogInView = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <HStack justify='space-between' pt={4}>
-                    <Checkbox defaultChecked>Remember me</Checkbox>
-                    <Button variant='link' colorScheme='teal' size='sm'>
+                  <HStack justify="space-between" pt={4}>
+                    <Checkbox>Remember me</Checkbox>
+                    <Button
+                      variant="link"
+                      colorScheme="teal"
+                      size="sm"
+                      onClick={changeRouteToResetPassword}
+                    >
                       Forgot password?
                     </Button>
                   </HStack>
-                  {logInErrors && (
-                    <Box mt={6} textAlign={'center'}>
-                      <Text color={'red.500'}>{logInErrors}</Text>
-                    </Box>
-                  )}
-                  <Box textAlign={'center'}>
+                  {errorMessage && <Error error={errorMessage}></Error>}
+                  <Box textAlign={"center"}>
                     <Button
-                      colorScheme='teal'
-                      variant='outline'
-                      width='36'
-                      textAlign={'center'}
+                      colorScheme="teal"
+                      variant="outline"
+                      width="36"
+                      textAlign={"center"}
                       mt={10}
-                      isLoading={isLogInLoading ? props.isSubmitting : false}
-                      type='submit'
+                      isLoading={isLoading ? props.isSubmitting : false}
+                      type="submit"
                     >
                       Log In
                     </Button>

@@ -1,10 +1,10 @@
-import { AppStore } from '../types';
+import { RootState } from "../..";
 
-export const getSignUpLoading = (state: AppStore): boolean =>
+export const getSignUpLoading = (state: RootState): boolean =>
   state.signUp.isLoading || false;
 
-export const getUserSignedUp = (state: AppStore): boolean =>
+export const getUserSignedUp = (state: RootState): boolean =>
   state.signUp.isUserSignedUp || false;
 
-export const getSignUpErrors = (state: AppStore): string[] =>
+export const getSignUpErrors = (state: RootState): string[] =>
   state.signUp.errors || [];
