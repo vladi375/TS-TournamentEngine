@@ -21,6 +21,10 @@ const userSlice = createSlice({
       builder.addCase(logUserOut.fulfilled, (state, action) => {
         return initialState;
       })
+      .addCase(logUserOut.rejected, (state, action) => {
+        // display toast here
+        console.log('error by logout')
+      })
     }
 })
 

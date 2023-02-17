@@ -1,6 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useColorMode } from "@chakra-ui/react";
 
 const Error = ({ error }: any) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Box
       mt={6}
@@ -8,10 +10,10 @@ const Error = ({ error }: any) => {
       textAlign={"center"}
       borderRadius={5}
       borderWidth={1}
-      borderColor="red.600"
-      background={"#ffebe8"}
+      borderColor={colorMode === "light" ? "red.600" : "whiteAlpha.400"}
+      background={colorMode === "light" ? "red.100" : "red.600"}
     >
-      <Text color={"black.500"}>{error}</Text>
+      <Text>{error}</Text>
     </Box>
   );
 };
