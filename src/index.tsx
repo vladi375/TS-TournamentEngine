@@ -1,18 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import { App } from "./App";
-import { ColorModeScript } from "@chakra-ui/react";
-import reportWebVitals from "./reportWebVitals";
-import axios from "axios";
-import { Provider } from "react-redux";
-import { defaultStore, preloadStore } from "./store/store";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { App } from './App';
+import { ColorModeScript } from '@chakra-ui/react';
+import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
+import { Provider } from 'react-redux';
+import { defaultStore, preloadStore } from './store/store';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 axios.defaults.withCredentials = true;
 axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
@@ -22,11 +22,11 @@ axios.interceptors.response.use(
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
       // http.ClientRequest in node.js
 
-      throw new Error("Server is down");
+      throw new Error('Server is down');
       // redirect to 500 page, but for now throw an Error
     } else {
       // Something happened in setting up the request that triggered an Error
-      throw new Error("You are bad ass");
+      throw new Error('You are bad ass');
     }
   }
 );
@@ -39,15 +39,15 @@ preloadStore()
   })
   .finally(() => {
     const root = ReactDOM.createRoot(
-      document.getElementById("root") as HTMLElement
+      document.getElementById('root') as HTMLElement
     );
     root.render(
-      <React.StrictMode>
+      <React.Fragment>
         <ColorModeScript />
         <Provider store={store}>
           <App />
         </Provider>
-      </React.StrictMode>
+      </React.Fragment>
     );
   });
 
