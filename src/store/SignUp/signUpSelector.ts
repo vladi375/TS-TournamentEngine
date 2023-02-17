@@ -1,4 +1,4 @@
-import { RootState } from "../..";
+import { RootState } from "../store";
 
 export const getSignUpLoading = (state: RootState): boolean =>
   state.signUp.isLoading || false;

@@ -6,7 +6,7 @@ import { ColorModeScript } from "@chakra-ui/react";
 import reportWebVitals from "./reportWebVitals";
 import axios from "axios";
 import { Provider } from "react-redux";
-import { LoadCurrentUser } from "./store/store";
+import { defaultStore, preloadStore } from "./store/store";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_URL;
 axios.defaults.withCredentials = true;
@@ -31,9 +31,9 @@ axios.interceptors.response.use(
   }
 );
 
-let store: any = null;
+let store = defaultStore;
 
-LoadCurrentUser()
+preloadStore()
   .then((createdStore: any) => {
     store = createdStore;
   })
@@ -55,8 +55,3 @@ LoadCurrentUser()
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;

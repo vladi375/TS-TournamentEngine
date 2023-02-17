@@ -7,14 +7,24 @@ import {
   HStack,
   Button,
   useColorMode,
+  Avatar,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
+  MenuDivider,
+  Text,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Link as ReachLink } from "react-router-dom";
 
 import { ROUTES } from "../constants";
-import { useAppSelector } from "../hooks/hooks";
-import { selectUserName } from "../store/userSlice";
-import { selectUserLogged } from "./../store/userSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import {
+  selectUserName,
+  selectUserLogged,
+  logUserOut,
+} from "../store/userSlice";
 
 type NavItemProperties = {
   children: any;
@@ -36,7 +46,9 @@ export const Header = () => {
   const { colorMode } = useColorMode();
 
   const isUserLoggedIn = useAppSelector(selectUserLogged);
-  const userEmail = useAppSelector(selectUserName);
+  const userName = useAppSelector(selectUserName);
+
+  const dispatch = useAppDispatch();
 
   return (
     <Box as="header" py={4} bg={colorMode === "dark" ? "gray.600" : "gray.200"}>
@@ -49,7 +61,21 @@ export const Header = () => {
             <NavItem to={ROUTES.CONTACTS}>Contacts</NavItem>
             {isUserLoggedIn ? (
               <React.Fragment>
-                <NavItem to={ROUTES.MAIN}>{userEmail}</NavItem>
+                {/* <NavItem to={ROUTES.MAIN}>{userName}</NavItem> */}
+                <Menu>
+                  <MenuButton>
+                    <Avatar name={userName} size="sm"></Avatar>
+                  </MenuButton>
+                  <MenuList>
+                    <Text pl={3}>
+                      Signed in as <strong>{userName}</strong>
+                    </Text>
+                    <MenuDivider />
+                    <MenuItem onClick={() => dispatch(logUserOut())}>
+                      Sign out
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
               </React.Fragment>
             ) : (
               <React.Fragment>

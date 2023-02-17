@@ -15,7 +15,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Error from "../components/Error";
 import { ROUTES } from "../constants";
-import { SetPassword } from "../services/accountService";
+import { setPassword } from "../services/accountService";
 import { SetPasswordValidationSchema } from "../services/validationSchema";
 
 const SetPasswordView = () => {
@@ -40,7 +40,7 @@ const SetPasswordView = () => {
     setLoading(true);
 
     try {
-      await SetPassword({
+      await setPassword({
         password: values.password,
         token: queryParams.get("token") ?? "",
       });

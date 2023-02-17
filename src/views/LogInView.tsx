@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { ROUTES } from "../constants";
 import LoginRequest from "../models/loginRequest";
 import { useState } from "react";
-import { Login } from "../services/accountService";
+import { login } from "../services/accountService";
 import Error from "../components/Error";
 import { userLoggedIn } from "../store/userSlice";
 import { selectUserLogged } from "./../store/userSlice";
@@ -52,7 +52,7 @@ export const LogInView = () => {
     setIsLoading(true);
 
     try {
-      const user = await Login(value);
+      const user = await login(value);
       setErrorMessage("");
       dispatch(userLoggedIn({ ...user }));
     } catch (error: any) {

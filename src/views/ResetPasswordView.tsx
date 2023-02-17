@@ -15,7 +15,7 @@ import { Field, Form, Formik, FormikProps } from "formik";
 import { useState } from "react";
 import ResetPasswordRequest from "../models/resetPasswordRequest";
 import { ResetPasswordValidationSchema } from "../services/validationSchema";
-import { ResetPassword } from "../services/accountService";
+import { resetPassword } from "../services/accountService";
 import Error from "../components/Error";
 
 const ResetPasswordView = () => {
@@ -31,7 +31,7 @@ const ResetPasswordView = () => {
     setIsLoading(true);
 
     try {
-      await ResetPassword(form);
+      await resetPassword(form);
       setErrorMessage("");
       setIsSubmitted(true);
     } catch (error: any) {

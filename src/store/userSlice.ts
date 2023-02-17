@@ -1,8 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '..';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { logout } from '../services/accountService';
 import Role from './../enums/role';
+import { RootState } from './store';
 
 const initialState: UserState = {};
+
+export const logUserOut = createAsyncThunk("user/logout", async () => {
+  await logout();
+});
 
 const userSlice = createSlice({
     name: 'user',
@@ -11,6 +16,11 @@ const userSlice = createSlice({
         userLoggedIn(state, action) {
             return {...action.payload};
         }
+    },
+    extraReducers: builder => {
+      builder.addCase(logUserOut.fulfilled, (state, action) => {
+        return initialState;
+      })
     }
 })
 
