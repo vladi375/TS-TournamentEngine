@@ -134,7 +134,13 @@ export const LogInView = () => {
                     )}
                   </Field>
                   <HStack justify="space-between" pt={4}>
-                    <Checkbox>Remember me</Checkbox>
+                    <Field name="rememberMe">
+                      {({ form, field }: any) => (
+                        <FormControl>
+                          <Checkbox {...field}>Remember me</Checkbox>
+                        </FormControl>
+                      )}
+                    </Field>
                     <Button
                       variant="link"
                       colorScheme="teal"
