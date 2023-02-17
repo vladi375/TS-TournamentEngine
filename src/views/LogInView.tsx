@@ -29,7 +29,7 @@ export const LogInView = () => {
   const initialValues: LoginRequest = {
     email: "",
     password: "",
-    rememberMe: true,
+    rememberMe: false,
   };
 
   const navigate = useNavigate();
