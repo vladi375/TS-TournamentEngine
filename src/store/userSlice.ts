@@ -32,11 +32,11 @@ const userSlice = createSlice({
 // export them as named exports from this "slice" file
 export const { userLoggedIn } = userSlice.actions
 
-export const selectUserLogged = (state: RootState): boolean => 
-  !!state.user.playerId;
+export const selectUserLogged = (state: RootState): boolean => !!state.user.playerId;
 
-export const selectUserName = (state: RootState): string | undefined =>
-  state.user.name;
+export const selectUserName = (state: RootState): string | undefined => state.user.name;
+
+export const selectUserId = (state: RootState): number | undefined => state.user.playerId;
 
 // Export the slice reducer as the default export
 export default userSlice.reducer

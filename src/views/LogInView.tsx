@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Container,
   Flex,
@@ -16,16 +16,15 @@ import {
 
 import { Formik, FormikProps, Form, Field } from "formik";
 import { LogInValidationSchema } from "../services/validationSchema";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppDispatch } from "../hooks/hooks";
 import { ROUTES } from "../constants";
 import LoginRequest from "../models/loginRequest";
 import { useState } from "react";
 import { login } from "../services/accountService";
 import Error from "../components/Error";
 import { userLoggedIn } from "../store/userSlice";
-import { selectUserLogged } from "./../store/userSlice";
 
-export const LogInView = () => {
+export const LogInView = (props: any) => {
   const initialValues: LoginRequest = {
     email: "",
     password: "",
@@ -33,6 +32,11 @@ export const LogInView = () => {
   };
 
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const dispatch = useAppDispatch();
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const changeRouteToSignUp = () => {
     navigate(ROUTES.SIGNUP);
@@ -42,19 +46,16 @@ export const LogInView = () => {
     navigate(ROUTES.PASSWORD_RESET);
   };
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const isUserLoggedIn = useAppSelector(selectUserLogged);
-  const dispatch = useAppDispatch();
-
   const handleSubmit = async (value: LoginRequest) => {
     setIsLoading(true);
 
     try {
       const user = await login(value);
+
       setErrorMessage("");
       dispatch(userLoggedIn({ ...user }));
+
+      navigate(state ? state.redirectTo : ROUTES.MAIN);
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -170,7 +171,6 @@ export const LogInView = () => {
           </Box>
         </Box>
       </Flex>
-      {isUserLoggedIn && <Navigate to={ROUTES.MAIN} />}
     </Container>
   );
 };
