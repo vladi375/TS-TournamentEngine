@@ -13,36 +13,36 @@ import {
   Select,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import { LOOKUP_TYPES } from "../constants";
-import Power from "../enums/power";
-import SelectOption from "../models/selectOption";
-import SubmitGameResultRequest from "../models/submitGameResultRequest";
-import { getSelectOptions } from "../services/lookupService";
-import { SibmitGameResultValidationSchema } from "../services/validationSchema";
-import Error from "../components/Error";
-import { useSelector } from "react-redux";
-import { selectUserId } from "../store/userSlice";
-import { submitGameResult } from "../services/gameResultService";
+} from '@chakra-ui/react';
+import { Field, Form, Formik } from 'formik';
+import { useEffect, useState } from 'react';
+import { LOOKUP_TYPES } from '../constants';
+import Power from '../enums/power';
+import SelectOption from '../models/selectOption';
+import SubmitGameResultRequest from '../models/submitGameResultRequest';
+import { getSelectOptions } from '../services/lookupService';
+import { SibmitGameResultValidationSchema } from '../services/validationSchema';
+import Error from '../components/Error';
+import { useSelector } from 'react-redux';
+import { selectUserId } from '../store/userSlice';
+import { submitGameResult } from '../services/gameResultService';
 
 const SubmitForm = () => {
   const today = new Date().toISOString().substring(0, 10);
 
   const initialValues = {
     date: today,
-    power: "",
+    power: '',
     opposingPlayer: 0,
     tournament: 0,
-    identifier: "",
-    winningPower: "",
+    identifier: '',
+    winningPower: '',
     gameEndTurn: 0,
     gameEndType: 0,
-    linkToVideo: "",
+    linkToVideo: '',
   };
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
@@ -63,18 +63,22 @@ const SubmitForm = () => {
 
   const playerId = useSelector(selectUserId);
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: any, actions: any) => {
     const request: SubmitGameResultRequest = {
       ...values,
-      winningPower: values.winningPower !== "Tie" ? values.winningPower : null,
-      playerBlue: values.power === Power.USA ? playerId : values.opposingPlayer,
-      playerRed: values.power === Power.USA ? values.opposingPlayer : playerId,
+      winningPower: values.winningPower !== 'Tie' ? values.winningPower : null,
+      playerBlueId:
+        values.power === Power.USA ? playerId : values.opposingPlayer,
+      playerRedId:
+        values.power === Power.USA ? values.opposingPlayer : playerId,
     };
 
     setLoading(true);
 
     try {
       await submitGameResult(request);
+      setErrorMessage('');
+      actions.resetForm();
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -101,7 +105,7 @@ const SubmitForm = () => {
       );
 
       document.addEventListener(
-        "touchstart",
+        'touchstart',
         (event: TouchEvent) => {
           event.stopPropagation();
         },
@@ -116,35 +120,35 @@ const SubmitForm = () => {
   }, []);
 
   return (
-    <Container maxW={"container.lg"} my={14}>
-      <Flex width="full" align="center" justifyContent="center">
+    <Container maxW={'container.lg'} my={14}>
+      <Flex width='full' align='center' justifyContent='center'>
         <Box
           p={12}
-          maxWidth="700px"
+          maxWidth='700px'
           borderWidth={1}
           borderRadius={8}
-          boxShadow="lg"
+          boxShadow='lg'
         >
-          <Box textAlign="center">
-            <Heading mb={4} size="lg">
+          <Box textAlign='center'>
+            <Heading mb={4} size='lg'>
               Submit your game result
             </Heading>
           </Box>
-          <Box textAlign="center" mb={8}>
+          <Box textAlign='center' mb={8}>
             <Text>
               Please use this form to report the result of a game. You can
               report results for games only, where you have participated at.
             </Text>
           </Box>
-          <Box mt={4} textAlign="left">
+          <Box mt={4} textAlign='left'>
             <Formik
               initialValues={initialValues}
               validationSchema={SibmitGameResultValidationSchema}
-              onSubmit={(values, actions) => handleSubmit(values)}
+              onSubmit={(values, actions) => handleSubmit(values, actions)}
             >
               {(props: any) => (
                 <Form>
-                  <Field name="tournament">
+                  <Field name='tournament'>
                     {({ form, field }: any) => (
                       <FormControl
                         isInvalid={
@@ -152,7 +156,7 @@ const SubmitForm = () => {
                         }
                       >
                         <FormLabel>Select type of the game:</FormLabel>
-                        <Select placeholder="Choose tournament" {...field}>
+                        <Select placeholder='Choose tournament' {...field}>
                           {tournamentsSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -165,7 +169,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="identifier">
+                  <Field name='identifier'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -187,8 +191,8 @@ const SubmitForm = () => {
                           0000.
                         </FormLabel>
                         <Input
-                          placeholder="Game identifier"
-                          type="text"
+                          placeholder='Game identifier'
+                          type='text'
                           {...field}
                         />
                         <FormErrorMessage>
@@ -197,7 +201,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="power">
+                  <Field name='power'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -205,17 +209,17 @@ const SubmitForm = () => {
                       >
                         <FormLabel>You played as</FormLabel>
                         <RadioGroup {...field}>
-                          <Stack spacing={5} direction="row">
+                          <Stack spacing={5} direction='row'>
                             <Radio
                               {...field}
-                              colorScheme="blue"
+                              colorScheme='blue'
                               value={Power.USA}
                             >
                               USA
                             </Radio>
                             <Radio
                               {...field}
-                              colorScheme="red"
+                              colorScheme='red'
                               value={Power.USSR}
                             >
                               USSR
@@ -228,7 +232,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="opposingPlayer">
+                  <Field name='opposingPlayer'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -238,7 +242,7 @@ const SubmitForm = () => {
                         }
                       >
                         <FormLabel>Your opponent was:</FormLabel>
-                        <Select placeholder="Choose your opponent" {...field}>
+                        <Select placeholder='Choose your opponent' {...field}>
                           {playersSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -251,7 +255,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="winningPower">
+                  <Field name='winningPower'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -262,22 +266,22 @@ const SubmitForm = () => {
                       >
                         <FormLabel>Who was the winning side?</FormLabel>
                         <RadioGroup {...field}>
-                          <Stack spacing={5} direction="row">
+                          <Stack spacing={5} direction='row'>
                             <Radio
                               {...field}
-                              colorScheme="blue"
+                              colorScheme='blue'
                               value={Power.USA}
                             >
                               USA
                             </Radio>
                             <Radio
                               {...field}
-                              colorScheme="red"
+                              colorScheme='red'
                               value={Power.USSR}
                             >
                               USSR
                             </Radio>
-                            <Radio {...field} colorScheme="gray" value="Tie">
+                            <Radio {...field} colorScheme='gray' value='Tie'>
                               Tie
                             </Radio>
                           </Stack>
@@ -288,7 +292,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="gameEndTurn">
+                  <Field name='gameEndTurn'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -297,7 +301,7 @@ const SubmitForm = () => {
                         }
                       >
                         <FormLabel>When did the game end?</FormLabel>
-                        <Select placeholder="Choose game end turn" {...field}>
+                        <Select placeholder='Choose game end turn' {...field}>
                           {gameEndTurnSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -310,7 +314,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="gameEndType">
+                  <Field name='gameEndType'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -319,7 +323,7 @@ const SubmitForm = () => {
                         }
                       >
                         <FormLabel>How did the game end?</FormLabel>
-                        <Select placeholder="Choose game end type" {...field}>
+                        <Select placeholder='Choose game end type' {...field}>
                           {gameEndTypeSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -332,7 +336,7 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="date">
+                  <Field name='date'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -340,15 +344,15 @@ const SubmitForm = () => {
                       >
                         <FormLabel>When did you play this game?</FormLabel>
                         <Input
-                          placeholder="Select Date"
-                          type="date"
+                          placeholder='Select Date'
+                          type='date'
                           {...field}
                         />
                         <FormErrorMessage>{form.errors?.date}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="linkToVideo">
+                  <Field name='linkToVideo'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -358,8 +362,8 @@ const SubmitForm = () => {
                       >
                         <FormLabel>Link to Video</FormLabel>
                         <Input
-                          placeholder="Link to video"
-                          type="text"
+                          placeholder='Link to video'
+                          type='text'
                           {...field}
                         />
                         <FormErrorMessage>
@@ -370,15 +374,15 @@ const SubmitForm = () => {
                   </Field>
 
                   {errorMessage && <Error error={errorMessage}></Error>}
-                  <Box textAlign={"center"}>
+                  <Box textAlign={'center'}>
                     <Button
-                      colorScheme="teal"
-                      variant="outline"
-                      width="36"
-                      textAlign={"center"}
+                      colorScheme='teal'
+                      variant='outline'
+                      width='36'
+                      textAlign={'center'}
                       mt={6}
                       isLoading={loading ? props.isSubmitting : false}
-                      type="submit"
+                      type='submit'
                     >
                       Submit
                     </Button>
