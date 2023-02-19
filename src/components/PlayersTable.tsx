@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { getPlayersData } from '../services/playerService';
 import Paginator from './Paginator/Paginator';
+import useFullPageLoader from '../hooks/useFullPageLoader';
 
 interface PlayerModel {
   id: number;
@@ -27,35 +28,50 @@ interface PlayerModel {
 const PlayersTable = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [playersPerPage] = useState(20);
+  const [playersPerPage] = useState(100);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const indexOfLastPlayerOnPage = currentPage * playersPerPage;
-  const indexOfFirstPlayerOnPage = indexOfLastPlayerOnPage - playersPerPage;
-  const currentPlayers = data.slice(
-    indexOfFirstPlayerOnPage,
-    indexOfLastPlayerOnPage
-  );
-  const totalPlayers = data?.length;
+  console.log('currentPage', currentPage);
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const [loader, showLoader, hideLoader] = useFullPageLoader();
+
+  const totalPlayers = playersPerPage * totalPages;
+
+  const getPlayersDataAndSetPlayers = async (pageNumber: number) => {
+    showLoader();
+    const playersData = await getPlayersData(pageNumber);
+    setData(playersData?.items);
+    hideLoader();
+  };
+
+  const getTotalPages = async () => {
+    const data = await getPlayersData(1);
+    setTotalPages(data.totalPages);
+  };
+
+  const paginate = (pageNumber: number) => {
+    getPlayersDataAndSetPlayers(pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const previousPage = () => {
     if (currentPage !== 1) {
+      getPlayersDataAndSetPlayers(currentPage - 1);
       setCurrentPage(currentPage - 1);
     }
   };
 
   const nextPage = () => {
     if (currentPage !== Math.ceil(totalPlayers / playersPerPage)) {
+      getPlayersDataAndSetPlayers(currentPage + 1);
       setCurrentPage(currentPage + 1);
     }
   };
 
   useEffect(() => {
-    (async () => {
-      const playersData = await getPlayersData();
-      setData(playersData);
-    })();
+    getPlayersDataAndSetPlayers(currentPage);
+    getTotalPages();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -63,7 +79,7 @@ const PlayersTable = () => {
       <Container maxW={'container.lg'} my={14}>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
           <TableContainer>
-            <Table variant='simple' size='lg'>
+            <Table variant='simple' size='md'>
               <Thead>
                 <Tr>
                   <Th>Player</Th>
@@ -73,7 +89,7 @@ const PlayersTable = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {currentPlayers.map((player: PlayerModel) => {
+                {data.map((player: PlayerModel) => {
                   return (
                     <Tr key={player.id}>
                       <Td>
@@ -99,13 +115,16 @@ const PlayersTable = () => {
         </Box>
       </Container>
       <Paginator
+        totalPages={totalPages}
         playersPerPage={playersPerPage}
-        totalPlayers={data.length}
+        totalPlayers={totalPlayers}
         paginate={paginate}
         currentPage={currentPage}
         nextPage={nextPage}
         previousPage={previousPage}
+        getPlayersDataAndSetPlayers={getPlayersDataAndSetPlayers}
       />
+      <>{loader}</>
     </React.Fragment>
   );
 };

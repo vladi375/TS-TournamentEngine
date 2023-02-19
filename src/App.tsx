@@ -1,15 +1,15 @@
-import { ChakraProvider, Box, VStack, Grid, theme } from "@chakra-ui/react";
-import { Header } from "./components/Header";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ROUTES } from "./constants";
-import LogInView from "./views/LogInView";
-import SignUpView from "./views/SignUpView";
-import MainView from "./views/MainView";
-import ResetPasswordView from "./views/ResetPasswordView";
-import SetPasswordView from "./views/SetPasswordView";
-import PlayersTable from "./components/PlayersTable";
-import SubmitForm from "./views/SubmitForm";
-import AuthorizedRouteGuard from "./components/AuthorizedRouteGuard";
+import { ChakraProvider, theme } from '@chakra-ui/react';
+import { Header } from './components/Header';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ROUTES } from './constants';
+import LogInView from './views/LogInView';
+import SignUpView from './views/SignUpView';
+import MainView from './views/MainView';
+import ResetPasswordView from './views/ResetPasswordView';
+import SetPasswordView from './views/SetPasswordView';
+import PlayersTable from './components/PlayersTable';
+import SubmitForm from './views/SubmitForm';
+import AuthorizedRouteGuard from './components/AuthorizedRouteGuard';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -28,10 +28,5 @@ export const App = () => (
         />
       </Routes>
     </Router>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <VStack spacing={8}></VStack>
-      </Grid>
-    </Box>
   </ChakraProvider>
 );

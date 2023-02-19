@@ -1,26 +1,28 @@
-import React, { FC } from 'react';
-import * as Scroll from 'react-scroll';
+import React, { FC, useEffect } from 'react';
+import { Box, Button } from '@chakra-ui/react';
 
 import './style.css';
 
 interface PaginatorProperties {
+  totalPages: number;
   playersPerPage: number;
   totalPlayers: number;
   paginate: (i: number) => void;
   previousPage: () => void;
   nextPage: () => void;
   currentPage: number;
+  getPlayersDataAndSetPlayers: (number: number) => void;
 }
 
-let scroll = Scroll.animateScroll;
-
 const Paginator: FC<PaginatorProperties> = ({
+  totalPages,
   playersPerPage,
   totalPlayers,
   paginate,
   previousPage,
   nextPage,
   currentPage,
+  getPlayersDataAndSetPlayers,
 }) => {
   const pageNumbers: any[] = [];
 
@@ -28,28 +30,42 @@ const Paginator: FC<PaginatorProperties> = ({
     pageNumbers.push(i);
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   return (
-    <div className='pagination-container' onClick={scroll.scrollToTop}>
-      <ul className='pagination'>
-        <li onClick={previousPage} className='page-number'>
-          Prev
-        </li>
-        {pageNumbers.map(number => (
-          <li
-            key={number}
-            onClick={() => paginate(number)}
-            className={
-              'page-number ' + (number === currentPage ? 'active' : '')
-            }
+    <Box my={10}>
+      <div className='pagination-container'>
+        <div className='pagination'>
+          <Button
+            onClick={previousPage}
+            disabled={currentPage === 1 ? true : false}
           >
-            {number}
-          </li>
-        ))}
-        <li onClick={nextPage} className='page-number'>
-          Next
-        </li>
-      </ul>
-    </div>
+            Prev
+          </Button>
+          {pageNumbers.map(number => (
+            <Button
+              key={number}
+              onClick={() => {
+                paginate(number);
+              }}
+              className={
+                'page-number ' + (number === currentPage ? 'active' : '')
+              }
+            >
+              {number}
+            </Button>
+          ))}
+          <Button
+            onClick={nextPage}
+            disabled={currentPage === totalPages ? true : false}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    </Box>
   );
 };
 

@@ -1,0 +1,14 @@
+.loading-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100vh !important;
+  background: rgba(248, 248, 248, 0.678);
+}

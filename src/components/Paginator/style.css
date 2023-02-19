@@ -10,27 +10,6 @@ ul {
   gap: 20px;
 }
 
-.pagination .page-number {
-  font-size: 16px;
-  font-weight: 600;
-  color: #319795;
-  background: #fff;
-  padding: 10px 20px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-
-.pagination .page-number:hover {
-  background: #e2e8f0;
-}
-
 .pagination .active {
   color: #319795;
-  background: #e2e8f0;
-}
-
-.pagination .active:hover {
-  color: #234e52;
-  background: #fff;
 }
