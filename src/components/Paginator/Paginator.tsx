@@ -11,7 +11,6 @@ interface PaginatorProperties {
   previousPage: () => void;
   nextPage: () => void;
   currentPage: number;
-  getPlayersDataAndSetPlayers: (number: number) => void;
 }
 
 const Paginator: FC<PaginatorProperties> = ({
@@ -22,7 +21,6 @@ const Paginator: FC<PaginatorProperties> = ({
   previousPage,
   nextPage,
   currentPage,
-  getPlayersDataAndSetPlayers,
 }) => {
   const pageNumbers: any[] = [];
 

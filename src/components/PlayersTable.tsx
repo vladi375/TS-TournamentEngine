@@ -31,8 +31,6 @@ const PlayersTable = () => {
   const [playersPerPage] = useState(100);
   const [totalPages, setTotalPages] = useState(0);
 
-  console.log('currentPage', currentPage);
-
   const [loader, showLoader, hideLoader] = useFullPageLoader();
 
   const totalPlayers = playersPerPage * totalPages;
@@ -122,7 +120,6 @@ const PlayersTable = () => {
         currentPage={currentPage}
         nextPage={nextPage}
         previousPage={previousPage}
-        getPlayersDataAndSetPlayers={getPlayersDataAndSetPlayers}
       />
       <>{loader}</>
     </React.Fragment>
