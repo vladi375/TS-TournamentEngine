@@ -77,7 +77,7 @@ const PlayersTable = () => {
       <Container maxW={'container.lg'} my={14}>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
           <TableContainer>
-            <Table variant='simple' size='md'>
+            <Table variant='simple' size='sm'>
               <Thead>
                 <Tr>
                   <Th>Player</Th>
