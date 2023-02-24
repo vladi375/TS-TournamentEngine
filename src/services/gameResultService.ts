@@ -1,6 +1,14 @@
 import axios from 'axios';
 import SubmitGameResultRequest from './../models/submitGameResultRequest';
 
+export async function getGameResult(id: number) {
+  const url = `/gameResult/${id}`;
+
+  const response = await axios.get(url);
+
+  return response.data;
+}
+
 export async function submitGameResult(request: SubmitGameResultRequest) {
     const url = '/gameResult';
 

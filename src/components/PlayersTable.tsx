@@ -75,7 +75,10 @@ const PlayersTable = () => {
                         {player.firstName} {player.lastName}
                       </Td>
                       <Td>
-                        <CountryFlag countryCode={player.country} />
+                        <CountryFlag
+                          countryCode={player.country}
+                          width='1rem'
+                        />
                       </Td>
                       <Td>{player.rating}</Td>
                       <Td>{player.rank}</Td>

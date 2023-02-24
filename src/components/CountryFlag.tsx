@@ -2,13 +2,14 @@ import { Image } from '@chakra-ui/react';
 
 interface CountryFlagProps {
   countryCode: string;
+  width: string;
 }
 
-const CountryFlag = ({ countryCode }: CountryFlagProps) => {
+const CountryFlag = ({ countryCode, width }: CountryFlagProps) => {
   return (
     <Image
       boxShadow={'0 0 0 1px rgba(0, 0, 0, 0.1)'}
-      width={'1rem'}
+      width={width}
       src={require(`../assets/flags/${countryCode}.svg`)}
     />
   );

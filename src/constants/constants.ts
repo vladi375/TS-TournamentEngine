@@ -7,8 +7,9 @@ export const ROUTES = {
   PASSWORD_RESET: '/account/password/reset',
   PASSWORD_SET: '/account/password/set',
   RATING: '/rating',
-  SUBMIT_GAME_RESULT: '/results/submit',
-  GAME_RESULTS: '/results'
+  SUBMIT_GAME_RESULT: '/result/submit',
+  GAME_RESULTS: '/result',
+  GAME_RESULT_INFO: '/result/:id'
 };
 
 const mainApiUrl = 'https://ts-tournament-engine.herokuapp.com';

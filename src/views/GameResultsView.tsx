@@ -10,17 +10,15 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import CountryFlag from '../components/CountryFlag';
 import Paginator from '../components/Paginator/Paginator';
 import GameResultInfo from '../models/gameResultInfo';
 import ConfirmationAlert from './../components/ConfirmationAlert';
-import {
-  deleteGameResult,
-  getGameResults,
-} from '../services/gameResultService';
+import { getGameResults } from '../services/gameResultService';
 
 const GameResultsView = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [gameResults, setGameResults] = useState([] as GameResultInfo[]);
   const [totalPages, setTotalPages] = useState(0);
@@ -41,6 +39,10 @@ const GameResultsView = () => {
     setSearchParams({ page: pageIndex.toString() });
   };
 
+  const goToDetails = (id: number) => {
+    navigate(`/result/${id}`);
+  };
+
   return (
     <>
       <Container maxW={'container.lg'} my={14}>
@@ -54,6 +56,7 @@ const GameResultsView = () => {
                   borderRadius={6}
                   boxShadow='lg'
                   cursor={'pointer'}
+                  onClick={() => goToDetails(result.id)}
                 >
                   <Flex justifyContent={'space-between'}>
                     <Text fontSize='0.6em' textColor={'gray.400'}>
@@ -75,12 +78,18 @@ const GameResultsView = () => {
                     </HStack> */}
                   </Flex>
                   <HStack>
-                    <CountryFlag countryCode={result.playerBlueCountry} />
+                    <CountryFlag
+                      countryCode={result.playerBlueCountry}
+                      width='1rem'
+                    />
                     <Text>{result.playerBlueName}</Text>
                   </HStack>
                   <Text ml={3}>vs</Text>
                   <HStack>
-                    <CountryFlag countryCode={result.playerRedCountry} />
+                    <CountryFlag
+                      countryCode={result.playerRedCountry}
+                      width='1rem'
+                    />
                     <Text>{result.playerRedName}</Text>
                   </HStack>
                 </Box>

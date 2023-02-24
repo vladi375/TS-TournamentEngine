@@ -11,6 +11,7 @@ import PlayersTable from './components/PlayersTable';
 import GameResultsView from './views/GameResultsView';
 import SubmitForm from './views/SubmitForm';
 import AuthorizedRouteGuard from './components/AuthorizedRouteGuard';
+import GameResult from './components/GameResultInfo';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -27,6 +28,7 @@ export const App = () => (
           path={ROUTES.SUBMIT_GAME_RESULT}
           element={<AuthorizedRouteGuard element={<SubmitForm />} />}
         />
+        <Route path={ROUTES.GAME_RESULT_INFO} element={<GameResult />} />
         <Route path={ROUTES.GAME_RESULTS} element={<GameResultsView />} />
       </Routes>
     </Router>
