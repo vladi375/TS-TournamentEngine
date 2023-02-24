@@ -15,6 +15,8 @@ import {
 import { getPlayersData } from '../services/playerService';
 import Paginator from './Paginator/Paginator';
 import useFullPageLoader from '../hooks/useFullPageLoader';
+import CountryFlag from './CountryFlag';
+import { useSearchParams } from 'react-router-dom';
 
 interface PlayerModel {
   id: number;
@@ -27,50 +29,29 @@ interface PlayerModel {
 
 const PlayersTable = () => {
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [playersPerPage] = useState(100);
   const [totalPages, setTotalPages] = useState(0);
-
   const [loader, showLoader, hideLoader] = useFullPageLoader();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const totalPlayers = playersPerPage * totalPages;
+  const pageParam = searchParams.get('page');
+  const currentPage = pageParam ? +pageParam : 1;
 
   const getPlayersDataAndSetPlayers = async (pageNumber: number) => {
     showLoader();
     const playersData = await getPlayersData(pageNumber);
     setData(playersData?.items);
+    setTotalPages(playersData?.totalPages);
     hideLoader();
   };
 
-  const getTotalPages = async () => {
-    const data = await getPlayersData(1);
-    setTotalPages(data.totalPages);
-  };
-
   const paginate = (pageNumber: number) => {
-    getPlayersDataAndSetPlayers(pageNumber);
-    setCurrentPage(pageNumber);
-  };
-
-  const previousPage = () => {
-    if (currentPage !== 1) {
-      getPlayersDataAndSetPlayers(currentPage - 1);
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const nextPage = () => {
-    if (currentPage !== Math.ceil(totalPlayers / playersPerPage)) {
-      getPlayersDataAndSetPlayers(currentPage + 1);
-      setCurrentPage(currentPage + 1);
-    }
+    setSearchParams({ page: pageNumber.toString() });
   };
 
   useEffect(() => {
     getPlayersDataAndSetPlayers(currentPage);
-    getTotalPages();
     // eslint-disable-next-line
-  }, []);
+  }, [currentPage]);
 
   return (
     <React.Fragment>
@@ -93,7 +74,9 @@ const PlayersTable = () => {
                       <Td>
                         {player.firstName} {player.lastName}
                       </Td>
-                      <Td>{player.country}</Td>
+                      <Td>
+                        <CountryFlag countryCode={player.country} />
+                      </Td>
                       <Td>{player.rating}</Td>
                       <Td>{player.rank}</Td>
                     </Tr>
@@ -114,12 +97,8 @@ const PlayersTable = () => {
       </Container>
       <Paginator
         totalPages={totalPages}
-        playersPerPage={playersPerPage}
-        totalPlayers={totalPlayers}
-        paginate={paginate}
         currentPage={currentPage}
-        nextPage={nextPage}
-        previousPage={previousPage}
+        goToPage={paginate}
       />
       <>{loader}</>
     </React.Fragment>

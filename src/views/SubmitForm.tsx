@@ -16,11 +16,15 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
-import { LOOKUP_TYPES } from '../constants';
 import Power from '../enums/power';
 import SelectOption from '../models/selectOption';
 import SubmitGameResultRequest from '../models/submitGameResultRequest';
-import { getSelectOptions } from '../services/lookupService';
+import {
+  getGameEndTurns,
+  getGameEndTypes,
+  getPlayers,
+  getTournamentTypes,
+} from '../services/lookupService';
 import { SibmitGameResultValidationSchema } from '../services/validationSchema';
 import Error from '../components/Error';
 import { useSelector } from 'react-redux';
@@ -88,21 +92,13 @@ const SubmitForm = () => {
 
   useEffect(() => {
     (async () => {
-      const players: SelectOption[] = await getSelectOptions(
-        LOOKUP_TYPES.PLAYERS
-      );
+      const players: SelectOption[] = await getPlayers();
 
-      const tournaments: SelectOption[] = await getSelectOptions(
-        LOOKUP_TYPES.TOURNAMENTS
-      );
+      const tournaments: SelectOption[] = await getTournamentTypes();
 
-      const gameEndTurns: SelectOption[] = await getSelectOptions(
-        LOOKUP_TYPES.GAME_END_TURNS
-      );
+      const gameEndTurns: SelectOption[] = await getGameEndTurns();
 
-      const gameEndTypes: SelectOption[] = await getSelectOptions(
-        LOOKUP_TYPES.GAME_END_TYPES
-      );
+      const gameEndTypes: SelectOption[] = await getGameEndTypes();
 
       document.addEventListener(
         'touchstart',

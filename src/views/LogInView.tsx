@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Container,
   Flex,
@@ -12,22 +12,22 @@ import {
   Button,
   HStack,
   Checkbox,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
-import { Formik, FormikProps, Form, Field } from "formik";
-import { LogInValidationSchema } from "../services/validationSchema";
-import { useAppDispatch } from "../hooks/hooks";
-import { ROUTES } from "../constants";
-import LoginRequest from "../models/loginRequest";
-import { useState } from "react";
-import { login } from "../services/accountService";
-import Error from "../components/Error";
-import { userLoggedIn } from "../store/userSlice";
+import { Formik, FormikProps, Form, Field } from 'formik';
+import { LogInValidationSchema } from '../services/validationSchema';
+import { useAppDispatch } from '../hooks/hooks';
+import { ROUTES } from '../constants';
+import LoginRequest from '../models/loginRequest';
+import { useState } from 'react';
+import { login } from '../services/accountService';
+import Error from '../components/Error';
+import { userLoggedIn } from '../store/userSlice';
 
 export const LogInView = (props: any) => {
   const initialValues: LoginRequest = {
-    email: "",
-    password: "",
+    email: '',
+    password: '',
     rememberMe: false,
   };
 
@@ -35,7 +35,7 @@ export const LogInView = (props: any) => {
   const { state } = useLocation();
   const dispatch = useAppDispatch();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const changeRouteToSignUp = () => {
@@ -52,10 +52,10 @@ export const LogInView = (props: any) => {
     try {
       const user = await login(value);
 
-      setErrorMessage("");
+      setErrorMessage('');
       dispatch(userLoggedIn({ ...user }));
 
-      navigate(state ? state.redirectTo : ROUTES.MAIN);
+      navigate(state ? state.redirectTo : ROUTES.HOME);
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -64,39 +64,39 @@ export const LogInView = (props: any) => {
   };
 
   return (
-    <Container maxW={"container.md"} my={14}>
-      <Flex align="center" justifyContent="center">
+    <Container maxW={'container.md'} my={14}>
+      <Flex align='center' justifyContent='center'>
         <Box
           p={12}
-          width={"500px"}
+          width={'500px'}
           borderWidth={1}
           borderRadius={8}
-          boxShadow="lg"
+          boxShadow='lg'
         >
-          <Box textAlign="center">
-            <Heading mb={6} size="lg">
+          <Box textAlign='center'>
+            <Heading mb={6} size='lg'>
               Log in to your account
             </Heading>
           </Box>
-          <HStack spacing="4" justify="center">
+          <HStack spacing='4' justify='center'>
             <Text>Don't have an account?</Text>
             <Button
-              variant="link"
-              colorScheme="teal"
+              variant='link'
+              colorScheme='teal'
               onClick={changeRouteToSignUp}
             >
               Sign up
             </Button>
           </HStack>
-          <Box mt={4} textAlign="left">
+          <Box mt={4} textAlign='left'>
             <Formik
               initialValues={initialValues}
               validationSchema={LogInValidationSchema}
-              onSubmit={async (values) => handleSubmit(values)}
+              onSubmit={async values => handleSubmit(values)}
             >
               {(props: FormikProps<LoginRequest>) => (
                 <Form>
-                  <Field name="email">
+                  <Field name='email'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -104,8 +104,8 @@ export const LogInView = (props: any) => {
                       >
                         <FormLabel>Email:</FormLabel>
                         <Input
-                          type="email"
-                          placeholder="test@test.com"
+                          type='email'
+                          placeholder='test@test.com'
                           {...field}
                         />
                         <FormErrorMessage>
@@ -114,7 +114,7 @@ export const LogInView = (props: any) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="password">
+                  <Field name='password'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -124,8 +124,8 @@ export const LogInView = (props: any) => {
                       >
                         <FormLabel>Password:</FormLabel>
                         <Input
-                          type="password"
-                          placeholder="*******"
+                          type='password'
+                          placeholder='*******'
                           {...field}
                         />
                         <FormErrorMessage>
@@ -134,8 +134,8 @@ export const LogInView = (props: any) => {
                       </FormControl>
                     )}
                   </Field>
-                  <HStack justify="space-between" pt={4}>
-                    <Field name="rememberMe">
+                  <HStack justify='space-between' pt={4}>
+                    <Field name='rememberMe'>
                       {({ form, field }: any) => (
                         <FormControl>
                           <Checkbox {...field}>Remember me</Checkbox>
@@ -143,24 +143,24 @@ export const LogInView = (props: any) => {
                       )}
                     </Field>
                     <Button
-                      variant="link"
-                      colorScheme="teal"
-                      size="sm"
+                      variant='link'
+                      colorScheme='teal'
+                      size='sm'
                       onClick={changeRouteToResetPassword}
                     >
                       Forgot password?
                     </Button>
                   </HStack>
                   {errorMessage && <Error error={errorMessage}></Error>}
-                  <Box textAlign={"center"}>
+                  <Box textAlign={'center'}>
                     <Button
-                      colorScheme="teal"
-                      variant="outline"
-                      width="36"
-                      textAlign={"center"}
+                      colorScheme='teal'
+                      variant='outline'
+                      width='36'
+                      textAlign={'center'}
                       mt={10}
                       isLoading={isLoading ? props.isSubmitting : false}
-                      type="submit"
+                      type='submit'
                     >
                       Log In
                     </Button>

@@ -6,3 +6,17 @@ export async function submitGameResult(request: SubmitGameResultRequest) {
 
     await axios.post(url, request);
 }
+
+export async function getGameResults(pageIndex: number) {
+  const url = `/gameResult/?pageIndex=${pageIndex}`;
+
+  const response = await axios.get(url);
+
+  return response?.data;
+}
+
+export async function deleteGameResult(id: number) {
+  const url = `/gameResult/${id}`;
+
+  await axios.delete(url);
+}

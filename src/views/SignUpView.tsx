@@ -232,7 +232,7 @@ const SignUpView = () => {
           </Box>
         </Box>
       </Flex>
-      {isUserSignedUp && <Navigate to={ROUTES.MAIN} />}
+      {isUserSignedUp && <Navigate to={ROUTES.HOME} />}
     </Container>
   );
 };

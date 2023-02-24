@@ -8,6 +8,7 @@ import MainView from './views/MainView';
 import ResetPasswordView from './views/ResetPasswordView';
 import SetPasswordView from './views/SetPasswordView';
 import PlayersTable from './components/PlayersTable';
+import GameResultsView from './views/GameResultsView';
 import SubmitForm from './views/SubmitForm';
 import AuthorizedRouteGuard from './components/AuthorizedRouteGuard';
 
@@ -16,16 +17,17 @@ export const App = () => (
     <Router>
       <Header />
       <Routes>
-        <Route path={ROUTES.MAIN} element={<MainView />} />
+        <Route path={ROUTES.HOME} element={<MainView />} />
         <Route path={ROUTES.LOGIN} element={<LogInView />} />
         <Route path={ROUTES.SIGNUP} element={<SignUpView />} />
         <Route path={ROUTES.PASSWORD_RESET} element={<ResetPasswordView />} />
         <Route path={ROUTES.PASSWORD_SET} element={<SetPasswordView />} />
-        <Route path={ROUTES.STANDINGS} element={<PlayersTable />} />
+        <Route path={ROUTES.RATING} element={<PlayersTable />} />
         <Route
           path={ROUTES.SUBMIT_GAME_RESULT}
           element={<AuthorizedRouteGuard element={<SubmitForm />} />}
         />
+        <Route path={ROUTES.GAME_RESULTS} element={<GameResultsView />} />
       </Routes>
     </Router>
   </ChakraProvider>

@@ -1,35 +1,52 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Box, Button } from '@chakra-ui/react';
+import * as _ from 'lodash';
 
 import './style.css';
 
 interface PaginatorProperties {
   totalPages: number;
-  playersPerPage: number;
-  totalPlayers: number;
-  paginate: (i: number) => void;
-  previousPage: () => void;
-  nextPage: () => void;
+  goToPage: (pageIndex: number) => void;
   currentPage: number;
 }
 
 const Paginator: FC<PaginatorProperties> = ({
   totalPages,
-  playersPerPage,
-  totalPlayers,
-  paginate,
-  previousPage,
-  nextPage,
+  goToPage,
   currentPage,
 }) => {
-  const pageNumbers: any[] = [];
+  const DOTS = '...';
 
-  for (let i: number = 1; i <= Math.ceil(totalPlayers / playersPerPage); i++) {
-    pageNumbers.push(i);
-  }
+  const getPageNumbers = () => {
+    if (totalPages <= maxPages) {
+      return _.range(1, totalPages);
+    }
+
+    if (currentPage <= 4) {
+      console.log(currentPage);
+      return [..._.range(1, maxPages + 1), DOTS, totalPages];
+    }
+
+    if (currentPage > 4 && currentPage <= totalPages - 4) {
+      return [
+        1,
+        DOTS,
+        ..._.range(currentPage - 2, currentPage + 3),
+        DOTS,
+        totalPages,
+      ];
+    }
+
+    if (currentPage > totalPages - 4) {
+      return [1, DOTS, ..._.range(totalPages - 4, totalPages + 1)];
+    }
+  };
+
+  const maxPages = 5;
+  const pageNumbers = getPageNumbers() ?? [];
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [currentPage]);
 
   return (
@@ -37,26 +54,28 @@ const Paginator: FC<PaginatorProperties> = ({
       <div className='pagination-container'>
         <div className='pagination'>
           <Button
-            onClick={previousPage}
+            onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1 ? true : false}
           >
             Prev
           </Button>
-          {pageNumbers.map(number => (
-            <Button
-              key={number}
-              onClick={() => {
-                paginate(number);
-              }}
-              className={
-                'page-number ' + (number === currentPage ? 'active' : '')
-              }
-            >
-              {number}
-            </Button>
-          ))}
+          {pageNumbers.map((number, index) =>
+            number === DOTS ? (
+              <span key={index}>{number}</span>
+            ) : (
+              <Button
+                key={index}
+                onClick={() => goToPage(number as number)}
+                className={
+                  'page-number ' + (number === currentPage ? 'active' : '')
+                }
+              >
+                {number}
+              </Button>
+            )
+          )}
           <Button
-            onClick={nextPage}
+            onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages ? true : false}
           >
             Next
