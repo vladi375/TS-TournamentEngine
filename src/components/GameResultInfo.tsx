@@ -10,14 +10,11 @@ import {
   Grid,
   GridItem,
   HStack,
-  Icon,
   Link,
   Text,
 } from '@chakra-ui/react';
 import CountryFlag from './CountryFlag';
 import Power from '../enums/power';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FaYoutube } from 'react-icons/fa';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 const GameResult = () => {
