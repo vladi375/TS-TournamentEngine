@@ -38,6 +38,8 @@ export const selectUserName = (state: RootState): string | undefined => state.us
 
 export const selectUserId = (state: RootState): number | undefined => state.user.playerId;
 
+export const selectUserIsAdmin = (state: RootState): boolean => state.user.role === Role.Admin
+
 // Export the slice reducer as the default export
 export default userSlice.reducer
 

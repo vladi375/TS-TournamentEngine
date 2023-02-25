@@ -18,37 +18,20 @@ import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import Power from '../enums/power';
 import SelectOption from '../models/selectOption';
-import SubmitGameResultRequest from '../models/submitGameResultRequest';
 import {
   getGameEndTurns,
   getGameEndTypes,
   getPlayers,
   getTournamentTypes,
 } from '../services/lookupService';
-import { SubmitGameResultValidationSchema } from '../services/validationSchema';
-import Error from '../components/Error';
-import { useSelector } from 'react-redux';
-import { selectUserId } from '../store/userSlice';
-import { submitGameResult } from '../services/gameResultService';
+import { EditGameResultValidationSchema } from '../services/validationSchema';
+import GameResultInfo from './../models/gameResultInfo';
 
-const SubmitForm = () => {
-  const today = new Date().toISOString().substring(0, 10);
+interface EditGameResultInfoProps {
+  gameResult: GameResultInfo;
+}
 
-  const initialValues = {
-    date: today,
-    power: '',
-    opposingPlayer: 0,
-    tournamentId: 0,
-    identifier: '',
-    winningPower: '',
-    gameEndTurnId: 0,
-    gameEndTypeId: 0,
-    linkToVideo: '',
-  };
-
-  const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
+export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
     new Array<SelectOption>()
   );
@@ -64,31 +47,6 @@ const SubmitForm = () => {
   const [gameEndTypeSelectOptions, setGameEndTypeSelectOptions] = useState(
     new Array<SelectOption>()
   );
-
-  const playerId = useSelector(selectUserId);
-
-  const handleSubmit = async (values: any, actions: any) => {
-    const request: SubmitGameResultRequest = {
-      ...values,
-      winningPower: values.winningPower !== 'Tie' ? values.winningPower : null,
-      playerBlueId:
-        values.power === Power.USA ? playerId : values.opposingPlayer,
-      playerRedId:
-        values.power === Power.USA ? values.opposingPlayer : playerId,
-    };
-
-    setLoading(true);
-
-    try {
-      await submitGameResult(request);
-      setErrorMessage('');
-      actions.resetForm();
-    } catch (error: any) {
-      setErrorMessage(error.message);
-    }
-
-    setLoading(false);
-  };
 
   useEffect(() => {
     (async () => {
@@ -115,6 +73,16 @@ const SubmitForm = () => {
     })();
   }, []);
 
+  const [loading, setLoading] = useState(false);
+
+  const initialValues = {
+    ...gameResult,
+    winningPower: gameResult.winningPower ? gameResult.winningPower : null,
+    date: new Date(gameResult.date).toISOString().substring(0, 10),
+  };
+
+  console.log(initialValues, 'initial');
+
   return (
     <Container maxW={'container.lg'} my={14}>
       <Flex width='full' align='center' justifyContent='center'>
@@ -127,7 +95,7 @@ const SubmitForm = () => {
         >
           <Box textAlign='center'>
             <Heading mb={4} size='lg'>
-              Submit your game result
+              Edit game result
             </Heading>
           </Box>
           <Box textAlign='center' mb={8}>
@@ -139,8 +107,8 @@ const SubmitForm = () => {
           <Box mt={4} textAlign='left'>
             <Formik
               initialValues={initialValues}
-              validationSchema={SubmitGameResultValidationSchema}
-              onSubmit={(values, actions) => handleSubmit(values, actions)}
+              validationSchema={EditGameResultValidationSchema}
+              onSubmit={(values, actions) => console.log(values)}
             >
               {(props: any) => (
                 <Form>
@@ -174,19 +142,7 @@ const SubmitForm = () => {
                           form.errors?.identifier && form.touched?.identifier
                         }
                       >
-                        <FormLabel>
-                          Check ID: For ITSL, RTSL ,OTSL and RATS , check it in
-                          Schedule. French League: F000. LFTS: E000. Greek
-                          League: G000. British League: U000. KTSL: K000. Liga
-                          Portuguesa: P000. Euskal Liga: B000. Lliga Catalana:
-                          C000. Dutch League: D000. Belgian League: B100.
-                          Illinois League I000. Hong Kong Cup: H000. Italian
-                          League I100. Polish League P100. Atlantic Coast
-                          League: A000. Nordic Cup: N000. Texas League: T000.
-                          Pacific League: P200. Canadian League : C100 . Israel
-                          League I200 . Chinese League : C200 Any other game:
-                          0000.
-                        </FormLabel>
+                        <FormLabel>Check ID:</FormLabel>
                         <Input
                           placeholder='Game identifier'
                           type='text'
@@ -198,48 +154,17 @@ const SubmitForm = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='power'>
-                    {({ form, field }: any) => (
-                      <FormControl
-                        mt={6}
-                        isInvalid={form.errors?.power && form.touched?.power}
-                      >
-                        <FormLabel>You played as</FormLabel>
-                        <RadioGroup {...field}>
-                          <Stack spacing={5} direction='row'>
-                            <Radio
-                              {...field}
-                              colorScheme='blue'
-                              value={Power.USA}
-                            >
-                              USA
-                            </Radio>
-                            <Radio
-                              {...field}
-                              colorScheme='red'
-                              value={Power.USSR}
-                            >
-                              USSR
-                            </Radio>
-                          </Stack>
-                        </RadioGroup>
-                        <FormErrorMessage>
-                          {form.errors?.power}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                  <Field name='opposingPlayer'>
+                  <Field name='playerBlueId'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
                         isInvalid={
-                          form.errors?.opposingPlayer &&
-                          form.touched?.opposingPlayer
+                          form.errors?.playerBlueId &&
+                          form.touched?.playerBlueId
                         }
                       >
-                        <FormLabel>Your opponent was:</FormLabel>
-                        <Select placeholder='Choose your opponent' {...field}>
+                        <FormLabel>USA Player:</FormLabel>
+                        <Select placeholder='Select player' {...field}>
                           {playersSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -247,7 +172,29 @@ const SubmitForm = () => {
                           ))}
                         </Select>
                         <FormErrorMessage>
-                          {form.errors?.opposingPlayer}
+                          {form.errors?.playerBlueId}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                  <Field name='playerRedId'>
+                    {({ form, field }: any) => (
+                      <FormControl
+                        mt={6}
+                        isInvalid={
+                          form.errors?.playerRedId && form.touched?.playerRedId
+                        }
+                      >
+                        <FormLabel>USSR Player:</FormLabel>
+                        <Select placeholder='Select player' {...field}>
+                          {playersSelectOptions.map((option, index) => (
+                            <option key={index} value={option.id}>
+                              {option.value}
+                            </option>
+                          ))}
+                        </Select>
+                        <FormErrorMessage>
+                          {form.errors?.playerRedId}
                         </FormErrorMessage>
                       </FormControl>
                     )}
@@ -341,7 +288,7 @@ const SubmitForm = () => {
                         mt={6}
                         isInvalid={form.errors?.date && form.touched?.date}
                       >
-                        <FormLabel>When did you play this game?</FormLabel>
+                        <FormLabel>When was the game played?</FormLabel>
                         <Input
                           placeholder='Select Date'
                           type='date'
@@ -372,7 +319,7 @@ const SubmitForm = () => {
                     )}
                   </Field>
 
-                  {errorMessage && <Error error={errorMessage}></Error>}
+                  {/* {errorMessage && <Error error={errorMessage}></Error>} */}
                   <Box textAlign={'center'}>
                     <Button
                       colorScheme='teal'
@@ -383,7 +330,7 @@ const SubmitForm = () => {
                       isLoading={loading ? props.isSubmitting : false}
                       type='submit'
                     >
-                      Submit
+                      Update
                     </Button>
                   </Box>
                 </Form>
@@ -396,4 +343,4 @@ const SubmitForm = () => {
   );
 };
 
-export default SubmitForm;
+export default EditGameResultInfo;

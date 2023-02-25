@@ -14,7 +14,6 @@ interface ConfirmationAlertProps {
   title: string;
   description: string;
   action: string;
-  actionsParams: {};
   onClose: (triggerAction: boolean) => void;
 }
 
@@ -24,7 +23,6 @@ const ConfirmationAlert = ({
   title,
   description,
   action,
-  actionsParams,
 }: ConfirmationAlertProps) => {
   const cancelRef = React.useRef(null);
 

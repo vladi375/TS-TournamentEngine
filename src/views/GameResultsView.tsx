@@ -1,4 +1,3 @@
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Container,
@@ -6,7 +5,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  IconButton,
   Text,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
@@ -14,7 +12,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import CountryFlag from '../components/CountryFlag';
 import Paginator from '../components/Paginator/Paginator';
 import GameResultInfo from '../models/gameResultInfo';
-import ConfirmationAlert from './../components/ConfirmationAlert';
 import { getGameResults } from '../services/gameResultService';
 import Power from '../enums/power';
 
@@ -63,20 +60,6 @@ const GameResultsView = () => {
                     <Text fontSize='0.6em' textColor={'gray.400'}>
                       Game #{result.id}
                     </Text>
-                    {/* <HStack>
-                      <IconButton
-                        onClick={() => console.log('Edit')}
-                        size={'1rem'}
-                        icon={<EditIcon />}
-                        aria-label='Edit Button'
-                      ></IconButton>
-                      <IconButton
-                        onClick={() => console.log('Delete')}
-                        size={'1rem'}
-                        icon={<DeleteIcon />}
-                        aria-label='Delete Button'
-                      ></IconButton>
-                    </HStack> */}
                   </Flex>
                   <HStack>
                     <CountryFlag
@@ -116,13 +99,6 @@ const GameResultsView = () => {
         currentPage={currentPage}
         goToPage={handleGoToPage}
       />
-      {/* <ConfirmationAlert
-        isOpen={deleteDialogOpen}
-        onClose={handleDelete}
-        title='Delete game result'
-        action='Delete'
-        description="Are you sure, you want to delete this result? You can't undo this action afterwards and it will trigger history recalculation, which can be expensive?"
-      /> */}
     </>
   );
 };

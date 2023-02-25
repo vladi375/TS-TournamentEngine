@@ -4,10 +4,10 @@ export default interface SubmitGameResultRequest {
     date: string,
     playerBlueId: number,
     playerRedId: number,
-    tournament: number,
+    tournamentId: number,
     identifier: string,
     winningPower?: Power,
-    gameEndTurn: number,
-    gameEndType: number
+    gameEndTurnId: number,
+    gameEndTypeId: number
     linkToVideo: string
 }
