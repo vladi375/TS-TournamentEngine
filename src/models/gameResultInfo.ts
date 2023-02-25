@@ -16,5 +16,9 @@ export default interface GameResultInfo {
 	gameEndTurnName: string,
 	gameEndTypeId: number,
 	gameEndTypeName: string,
+	playerBlueOldRating: number,
+	playerBlueNewRating: number,
+	playerRedOldRating: number,
+	playerRedNewRating: number;
 	linkToVideo: string
 }

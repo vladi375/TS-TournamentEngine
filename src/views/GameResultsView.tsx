@@ -16,6 +16,7 @@ import Paginator from '../components/Paginator/Paginator';
 import GameResultInfo from '../models/gameResultInfo';
 import ConfirmationAlert from './../components/ConfirmationAlert';
 import { getGameResults } from '../services/gameResultService';
+import Power from '../enums/power';
 
 const GameResultsView = () => {
   const navigate = useNavigate();
@@ -82,7 +83,13 @@ const GameResultsView = () => {
                       countryCode={result.playerBlueCountry}
                       width='1rem'
                     />
-                    <Text>{result.playerBlueName}</Text>
+                    <Text
+                      fontWeight={
+                        result.winningPower === Power.USA ? 'bold' : 'normal'
+                      }
+                    >
+                      {result.playerBlueName}
+                    </Text>
                   </HStack>
                   <Text ml={3}>vs</Text>
                   <HStack>
@@ -90,7 +97,13 @@ const GameResultsView = () => {
                       countryCode={result.playerRedCountry}
                       width='1rem'
                     />
-                    <Text>{result.playerRedName}</Text>
+                    <Text
+                      fontWeight={
+                        result.winningPower === Power.USSR ? 'bold' : 'normal'
+                      }
+                    >
+                      {result.playerRedName}
+                    </Text>
                   </HStack>
                 </Box>
               </GridItem>

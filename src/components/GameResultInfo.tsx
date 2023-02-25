@@ -15,7 +15,11 @@ import {
 } from '@chakra-ui/react';
 import CountryFlag from './CountryFlag';
 import Power from '../enums/power';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ExternalLinkIcon,
+} from '@chakra-ui/icons';
 
 const GameResult = () => {
   // can be null, add handling for this
@@ -37,10 +41,33 @@ const GameResult = () => {
           Game #{result.id}
         </Text>
         <Grid mt={2} templateColumns='5fr 0.1fr 5fr' gap={4}>
-          <GridItem w='100%' display='flex' justifyContent='flex-end'>
+          <GridItem
+            w='100%'
+            display='flex'
+            flexDir={'column'}
+            alignItems='flex-end'
+          >
             <HStack>
               <Text>{result.playerBlueName}</Text>
-              <CountryFlag countryCode='US' width='2em' />
+              {result.id && (
+                <CountryFlag
+                  countryCode={result.playerBlueCountry}
+                  width='2em'
+                />
+              )}
+            </HStack>
+            <HStack>
+              <Flex alignItems={'center'}>
+                <Text color={'gray.400'} fontSize='0.8em'>
+                  {result.playerBlueOldRating}
+                </Text>
+                {result.playerBlueNewRating > result.playerBlueOldRating ? (
+                  <ChevronUpIcon color={'green.400'} />
+                ) : (
+                  <ChevronDownIcon color={'red.400'} />
+                )}
+              </Flex>
+              <Text fontSize='0.8em'>{result.playerBlueNewRating}</Text>
             </HStack>
           </GridItem>
           <GridItem w='100%'>
@@ -48,8 +75,26 @@ const GameResult = () => {
           </GridItem>
           <GridItem w='100%'>
             <HStack>
-              <CountryFlag countryCode='SU' width='2em' />
+              {result.id && (
+                <CountryFlag
+                  countryCode={result.playerRedCountry}
+                  width='2em'
+                />
+              )}
               <Text>{result.playerRedName}</Text>
+            </HStack>
+            <HStack>
+              <Text fontSize='0.8em'>{result.playerRedNewRating}</Text>
+              <Flex alignItems={'center'}>
+                {result.playerRedNewRating > result.playerRedOldRating ? (
+                  <ChevronUpIcon color={'green.400'} />
+                ) : (
+                  <ChevronDownIcon color={'red.400'} />
+                )}
+                <Text color={'gray.400'} fontSize='0.8em'>
+                  {result.playerRedOldRating}
+                </Text>
+              </Flex>
             </HStack>
           </GridItem>
         </Grid>
