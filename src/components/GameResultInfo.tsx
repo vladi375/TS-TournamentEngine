@@ -96,7 +96,7 @@ const GameResult = () => {
                   alignItems='flex-end'
                 >
                   <HStack>
-                    <Text>{result.playerBlueName}</Text>
+                    <Text borderBottom='1px' borderBottomColor='blue.500'>{result.playerBlueName}</Text>
                     {result.id && (
                       <CountryFlag
                         countryCode={result.playerBlueCountry}
@@ -130,7 +130,7 @@ const GameResult = () => {
                         width='2em'
                       />
                     )}
-                    <Text>{result.playerRedName}</Text>
+                    <Text borderBottom='1px' borderBottomColor='red.500'>{result.playerRedName}</Text>
                   </HStack>
                   <HStack>
                     <Text fontSize='0.8em'>{result.playerRedNewRating}</Text>
@@ -181,14 +181,9 @@ const GameResult = () => {
                   <Text>{result.tournamentName}</Text>
                   <Text mt={2}>{result.identifier}</Text>
                   <Flex mt={2} direction='column' justifyItems={'center'}>
-                    <CountryFlag
-                      countryCode={
-                        result.winningPower === Power.USA ? 'US' : 'SU'
-                      }
-                      width='2em'
-                    />
+                  <Text>{result.winningPower ? result.winningPower : 'Tie'}</Text>
                   </Flex>
-                  <Text mt={2.5}>{result.gameEndTurnName}</Text>
+                  <Text mt={2}>{result.gameEndTurnName}</Text>
                   <Text mt={2}>{result.gameEndTypeName}</Text>
                   <Text mt={2}>
                     {new Date(result.date).toLocaleDateString()}
