@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Container,
@@ -13,25 +15,31 @@ import {
   Select,
   Stack,
   Text,
-} from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
-import { useEffect, useState } from 'react';
-import Power from '../enums/power';
-import SelectOption from '../models/selectOption';
+} from "@chakra-ui/react";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
+import Power from "../enums/power";
+import SelectOption from "../models/selectOption";
+import { editGameResult } from "../services/gameResultService";
 import {
   getGameEndTurns,
   getGameEndTypes,
   getPlayers,
   getTournamentTypes,
-} from '../services/lookupService';
-import { EditGameResultValidationSchema } from '../services/validationSchema';
-import GameResultInfo from './../models/gameResultInfo';
+} from "../services/lookupService";
+import { EditGameResultValidationSchema } from "../services/validationSchema";
+import GameResultInfo from "./../models/gameResultInfo";
+import Error from "./Error";
 
 interface EditGameResultInfoProps {
   gameResult: GameResultInfo;
+  onUpdated: (updatedGameResult: GameResultInfo) => void;
 }
 
-export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
+export const EditGameResultInfo = ({
+  gameResult,
+  onUpdated,
+}: EditGameResultInfoProps) => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
     new Array<SelectOption>()
   );
@@ -59,7 +67,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
       const gameEndTypes: SelectOption[] = await getGameEndTypes();
 
       document.addEventListener(
-        'touchstart',
+        "touchstart",
         (event: TouchEvent) => {
           event.stopPropagation();
         },
@@ -74,6 +82,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
   }, []);
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const initialValues = {
     ...gameResult,
@@ -81,38 +90,48 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
     date: new Date(gameResult.date).toISOString().substring(0, 10),
   };
 
-  console.log(initialValues, 'initial');
+  const handleSubmit = async (values: any) => {
+    try {
+      setLoading(true);
+      await editGameResult(values);
+      onUpdated(values);
+    } catch (error: any) {
+      // do error handling
+      setErrorMessage(error.message);
+      setLoading(false);
+    }
+  };
 
   return (
-    <Container maxW={'container.lg'} my={14}>
-      <Flex width='full' align='center' justifyContent='center'>
+    <Container maxW={"container.lg"} my={14}>
+      <Flex width="full" align="center" justifyContent="center">
         <Box
           p={12}
-          maxWidth='700px'
+          maxWidth="700px"
           borderWidth={1}
           borderRadius={8}
-          boxShadow='lg'
+          boxShadow="lg"
         >
-          <Box textAlign='center'>
-            <Heading mb={4} size='lg'>
+          <Box textAlign="center">
+            <Heading mb={4} size="lg">
               Edit game result
             </Heading>
           </Box>
-          <Box textAlign='center' mb={8}>
+          <Box textAlign="center" mb={8}>
             <Text>
               Please use this form to report the result of a game. You can
               report results for games only, where you have participated at.
             </Text>
           </Box>
-          <Box mt={4} textAlign='left'>
+          <Box mt={4} textAlign="left">
             <Formik
               initialValues={initialValues}
               validationSchema={EditGameResultValidationSchema}
-              onSubmit={(values, actions) => console.log(values)}
+              onSubmit={(values, actions) => handleSubmit(values)}
             >
               {(props: any) => (
                 <Form>
-                  <Field name='tournamentId'>
+                  <Field name="tournamentId">
                     {({ form, field }: any) => (
                       <FormControl
                         isInvalid={
@@ -121,7 +140,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                         }
                       >
                         <FormLabel>Select type of the game:</FormLabel>
-                        <Select placeholder='Choose tournament' {...field}>
+                        <Select placeholder="Choose tournament" {...field}>
                           {tournamentsSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -134,7 +153,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='identifier'>
+                  <Field name="identifier">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -144,8 +163,8 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       >
                         <FormLabel>Check ID:</FormLabel>
                         <Input
-                          placeholder='Game identifier'
-                          type='text'
+                          placeholder="Game identifier"
+                          type="text"
                           {...field}
                         />
                         <FormErrorMessage>
@@ -154,7 +173,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='playerBlueId'>
+                  <Field name="playerBlueId">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -164,7 +183,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                         }
                       >
                         <FormLabel>USA Player:</FormLabel>
-                        <Select placeholder='Select player' {...field}>
+                        <Select placeholder="Select player" {...field}>
                           {playersSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -177,7 +196,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='playerRedId'>
+                  <Field name="playerRedId">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -186,7 +205,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                         }
                       >
                         <FormLabel>USSR Player:</FormLabel>
-                        <Select placeholder='Select player' {...field}>
+                        <Select placeholder="Select player" {...field}>
                           {playersSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -199,7 +218,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='winningPower'>
+                  <Field name="winningPower">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -210,22 +229,22 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       >
                         <FormLabel>Who was the winning side?</FormLabel>
                         <RadioGroup {...field}>
-                          <Stack spacing={5} direction='row'>
+                          <Stack spacing={5} direction="row">
                             <Radio
                               {...field}
-                              colorScheme='blue'
+                              colorScheme="blue"
                               value={Power.USA}
                             >
                               USA
                             </Radio>
                             <Radio
                               {...field}
-                              colorScheme='red'
+                              colorScheme="red"
                               value={Power.USSR}
                             >
                               USSR
                             </Radio>
-                            <Radio {...field} colorScheme='gray' value='Tie'>
+                            <Radio {...field} colorScheme="gray" value="Tie">
                               Tie
                             </Radio>
                           </Stack>
@@ -236,7 +255,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='gameEndTurnId'>
+                  <Field name="gameEndTurnId">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -246,7 +265,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                         }
                       >
                         <FormLabel>When did the game end?</FormLabel>
-                        <Select placeholder='Choose game end turn' {...field}>
+                        <Select placeholder="Choose game end turn" {...field}>
                           {gameEndTurnSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -259,7 +278,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='gameEndTypeId'>
+                  <Field name="gameEndTypeId">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -269,7 +288,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                         }
                       >
                         <FormLabel>How did the game end?</FormLabel>
-                        <Select placeholder='Choose game end type' {...field}>
+                        <Select placeholder="Choose game end type" {...field}>
                           {gameEndTypeSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -282,7 +301,7 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='date'>
+                  <Field name="date">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -290,15 +309,15 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       >
                         <FormLabel>When was the game played?</FormLabel>
                         <Input
-                          placeholder='Select Date'
-                          type='date'
+                          placeholder="Select Date"
+                          type="date"
                           {...field}
                         />
                         <FormErrorMessage>{form.errors?.date}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='linkToVideo'>
+                  <Field name="linkToVideo">
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -308,8 +327,8 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       >
                         <FormLabel>Link to Video</FormLabel>
                         <Input
-                          placeholder='Link to video'
-                          type='text'
+                          placeholder="Link to video"
+                          type="text"
                           {...field}
                         />
                         <FormErrorMessage>
@@ -318,17 +337,16 @@ export const EditGameResultInfo = ({ gameResult }: EditGameResultInfoProps) => {
                       </FormControl>
                     )}
                   </Field>
-
-                  {/* {errorMessage && <Error error={errorMessage}></Error>} */}
-                  <Box textAlign={'center'}>
+                  {errorMessage && <Error error={errorMessage}></Error>}
+                  <Box textAlign={"center"}>
                     <Button
-                      colorScheme='teal'
-                      variant='outline'
-                      width='36'
-                      textAlign={'center'}
+                      colorScheme="teal"
+                      variant="outline"
+                      width="36"
+                      textAlign={"center"}
                       mt={6}
                       isLoading={loading ? props.isSubmitting : false}
-                      type='submit'
+                      type="submit"
                     >
                       Update
                     </Button>

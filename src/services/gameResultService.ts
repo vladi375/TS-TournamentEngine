@@ -28,3 +28,9 @@ export async function deleteGameResult(id: number) {
 
   await axios.delete(url);
 }
+
+export async function editGameResult(request: SubmitGameResultRequest) {
+  const url = '/gameResult';
+
+  await axios.patch(url, request);
+}

@@ -2,8 +2,6 @@ import {
   Box,
   Container,
   Flex,
-  Grid,
-  GridItem,
   HStack,
   Text,
 } from '@chakra-ui/react';
@@ -45,10 +43,9 @@ const GameResultsView = () => {
     <>
       <Container maxW={'container.lg'} my={14}>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
-          <Grid templateColumns='repeat(3, 1fr)' gap={3}>
             {gameResults.map(result => (
-              <GridItem key={result.id}>
-                <Box
+                <Box key={result.id}
+                  mb='2'
                   p={2}
                   borderWidth={1}
                   borderRadius={6}
@@ -56,42 +53,44 @@ const GameResultsView = () => {
                   cursor={'pointer'}
                   onClick={() => goToDetails(result.id)}
                 >
-                  <Flex justifyContent={'space-between'}>
-                    <Text fontSize='0.6em' textColor={'gray.400'}>
+                  <Flex justifyContent={'space-between'} fontSize='0.6em' textColor={'gray.400'}>
+                    <Text>
                       Game #{result.id}
                     </Text>
+                    <Text>{result.tournamentName}</Text>
+                    <Text>{new Date(result.date).toLocaleDateString()}</Text>
                   </Flex>
-                  <HStack>
-                    <CountryFlag
-                      countryCode={result.playerBlueCountry}
-                      width='1rem'
-                    />
-                    <Text
-                      fontWeight={
-                        result.winningPower === Power.USA ? 'bold' : 'normal'
-                      }
-                    >
-                      {result.playerBlueName}
-                    </Text>
-                  </HStack>
-                  <Text ml={3}>vs</Text>
-                  <HStack>
-                    <CountryFlag
-                      countryCode={result.playerRedCountry}
-                      width='1rem'
-                    />
-                    <Text
-                      fontWeight={
-                        result.winningPower === Power.USSR ? 'bold' : 'normal'
-                      }
-                    >
-                      {result.playerRedName}
-                    </Text>
-                  </HStack>
+                  <Flex>
+                    <HStack>
+                      <CountryFlag
+                        countryCode={result.playerBlueCountry}
+                        width='1rem'
+                      />
+                      <Text
+                        fontWeight={
+                          result.winningPower === Power.USA ? 'bold' : 'normal'
+                        }
+                      >
+                        {result.playerBlueName}
+                      </Text>
+                    </HStack>
+                    <Text ml={3} mr='3'>vs</Text>
+                    <HStack>
+                      <CountryFlag
+                        countryCode={result.playerRedCountry}
+                        width='1rem'
+                      />
+                      <Text
+                        fontWeight={
+                          result.winningPower === Power.USSR ? 'bold' : 'normal'
+                        }
+                      >
+                        {result.playerRedName}
+                      </Text>
+                    </HStack>
+                  </Flex>
                 </Box>
-              </GridItem>
             ))}
-          </Grid>
         </Box>
       </Container>
       <Paginator
