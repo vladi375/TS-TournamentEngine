@@ -20,5 +20,6 @@ export default interface GameResultInfo {
 	playerBlueNewRating: number,
 	playerRedOldRating: number,
 	playerRedNewRating: number;
-	linkToVideo: string
+	linkToVideo: string,
+	whatsAppMessage: string
 }

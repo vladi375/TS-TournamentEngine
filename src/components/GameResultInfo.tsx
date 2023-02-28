@@ -214,6 +214,11 @@ const GameResult = () => {
                 </GridItem>
               </Grid>
             </Box>
+            {isAdmin && (
+              <Box mt={3} p={3} borderWidth={1} borderRadius={8} boxShadow="lg">
+                {result.whatsAppMessage}
+              </Box>
+            )}
           </Container>
           <ConfirmationAlert
             isOpen={deleteAlert}

@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
   Button,
   Container,
@@ -33,10 +31,10 @@ import Error from "./Error";
 
 interface EditGameResultInfoProps {
   gameResult: GameResultInfo;
-  onUpdated: (updatedGameResult: GameResultInfo) => void;
+  onUpdated: () => void;
 }
 
-export const EditGameResultInfo = ({
+const EditGameResultInfo = ({
   gameResult,
   onUpdated,
 }: EditGameResultInfoProps) => {
@@ -94,7 +92,7 @@ export const EditGameResultInfo = ({
     try {
       setLoading(true);
       await editGameResult(values);
-      onUpdated(values);
+      onUpdated();
     } catch (error: any) {
       // do error handling
       setErrorMessage(error.message);
