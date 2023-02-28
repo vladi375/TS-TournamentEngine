@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAppSelector } from "../hooks/hooks";
-import { selectUserLogged } from "../store/userSlice";
-import { ROUTES } from "./../constants/constants";
+import { useAppSelector } from "../../hooks/hooks";
+import { selectUserLogged } from "../../store/userSlice";
+import { ROUTES } from "../../constants/constants";
 
 interface RouteGuardProps {
   element: JSX.Element;

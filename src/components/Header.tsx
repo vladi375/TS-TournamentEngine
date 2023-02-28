@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC } from "react";
 import {
   Box,
   Flex,
@@ -14,17 +14,18 @@ import {
   MenuButton,
   MenuDivider,
   Text,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Link as ReachLink } from 'react-router-dom';
+} from "@chakra-ui/react";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { Link as ReachLink, useNavigate } from "react-router-dom";
 
-import { ROUTES } from '../constants';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
+import { ROUTES } from "../constants";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import {
   selectUserName,
   selectUserLogged,
   logUserOut,
-} from '../store/userSlice';
+  selectUserIsAdmin,
+} from "../store/userSlice";
 
 type NavItemProperties = {
   children: any;
@@ -33,11 +34,11 @@ type NavItemProperties = {
 
 const NavItem: FC<NavItemProperties> = ({
   children,
-  to = '/',
+  to = "/",
 }): JSX.Element => {
   return (
-    <Link as={ReachLink} to={to} style={{ textDecoration: 'none' }}>
-      <Button variant='ghost'>{children}</Button>
+    <Link as={ReachLink} to={to} style={{ textDecoration: "none" }}>
+      <Button variant="ghost">{children}</Button>
     </Link>
   );
 };
@@ -47,15 +48,17 @@ export const Header = () => {
 
   const isUserLoggedIn = useAppSelector(selectUserLogged);
   const userName = useAppSelector(selectUserName);
+  const isAdmin = useAppSelector(selectUserIsAdmin);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   return (
-    <Box as='header' py={4} bg={colorMode === 'dark' ? 'gray.600' : 'gray.200'}>
-      <Container maxW={'container.xl'}>
-        <Flex justifyContent={'space-between'}>
-          <ColorModeSwitcher justifySelf='flex-start' />
-          <HStack spacing={'36px'}>
+    <Box as="header" py={4} bg={colorMode === "dark" ? "gray.600" : "gray.200"}>
+      <Container maxW={"container.xl"}>
+        <Flex justifyContent={"space-between"}>
+          <ColorModeSwitcher justifySelf="flex-start" />
+          <HStack spacing={"36px"}>
             <NavItem to={ROUTES.HOME}>Home</NavItem>
             <NavItem to={ROUTES.RATING}>Rating</NavItem>
             <NavItem to={ROUTES.GAME_RESULTS}>Game results</NavItem>
@@ -64,13 +67,21 @@ export const Header = () => {
               <React.Fragment>
                 <Menu>
                   <MenuButton>
-                    <Avatar name={userName} size='sm'></Avatar>
+                    <Avatar name={userName} size="sm"></Avatar>
                   </MenuButton>
                   <MenuList>
                     <Text pl={3}>
                       Signed in as <strong>{userName}</strong>
                     </Text>
                     <MenuDivider />
+                    {isAdmin && (
+                      <>
+                        <MenuItem onClick={() => navigate(ROUTES.SIGNUP)}>
+                          Add new player
+                        </MenuItem>
+                        <MenuDivider />
+                      </>
+                    )}
                     <MenuItem onClick={() => dispatch(logUserOut())}>
                       Sign out
                     </MenuItem>
@@ -80,7 +91,6 @@ export const Header = () => {
             ) : (
               <React.Fragment>
                 <NavItem to={ROUTES.LOGIN}>Log in</NavItem>
-                {/* <NavItem to={ROUTES.SIGNUP}>Sign up</NavItem> */}
               </React.Fragment>
             )}
           </HStack>
