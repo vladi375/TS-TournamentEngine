@@ -74,7 +74,7 @@ export const LogInView = (props: any) => {
                     boxShadow='lg'
                 >
                     <Box textAlign='center'>
-                        <Heading mb={6} size='lg'>
+                        <Heading mb={8} size='lg'>
                             Log in to your account
                         </Heading>
                     </Box>

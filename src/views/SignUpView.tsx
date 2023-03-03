@@ -119,7 +119,7 @@ const SignUpView = () => {
                                                 </FormLabel>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Enter your firstname'
+                                                    placeholder='Enter firstname'
                                                     {...field}
                                                 />
                                                 <FormErrorMessage>
@@ -140,7 +140,7 @@ const SignUpView = () => {
                                                 <FormLabel>Lastname:</FormLabel>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Enter your lastname'
+                                                    placeholder='Enter lastname'
                                                     {...field}
                                                 />
                                                 <FormErrorMessage>
@@ -205,7 +205,7 @@ const SignUpView = () => {
                                                 </FormLabel>
                                                 <Input
                                                     type='text'
-                                                    placeholder='Enter your Playdek Name'
+                                                    placeholder='Enter Playdek Name'
                                                     {...field}
                                                 />
                                                 <FormErrorMessage>
@@ -225,7 +225,7 @@ const SignUpView = () => {
                                             >
                                                 <FormLabel>Country:</FormLabel>
                                                 <Select
-                                                    placeholder='Choose your country'
+                                                    placeholder='Choose a country'
                                                     {...field}
                                                 >
                                                     {countries.map(
