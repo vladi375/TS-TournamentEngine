@@ -36,7 +36,7 @@ export const SubmitGameResultValidationSchema = Yup.object().shape({
   gameEndTurnId: Yup.number().moreThan(0, 'Please specify game end turn'),
   gameEndTypeId: Yup.number().moreThan(0, 'Please specify game end type'),
   date: Yup.date().required('Please specify the date, when the game was played'),
-  linkToVideo: Yup.string().url('Only valid URL is allowed')
+  linkToVideo: Yup.string().url('Only valid URL is allowed').nullable()
 })
 
 export const EditGameResultValidationSchema = Yup.object().shape({
@@ -48,5 +48,5 @@ export const EditGameResultValidationSchema = Yup.object().shape({
   gameEndTurnId: Yup.number().required('Please specify game end turn'),
   gameEndTypeId: Yup.number().required('Please specify game end type'),
   date: Yup.date().required('Please specify the date, when the game was played'),
-  linkToVideo: Yup.string().url('Only valid URL is allowed')
+  linkToVideo: Yup.string().url('Only valid URL is allowed').nullable()
 })

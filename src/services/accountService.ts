@@ -1,21 +1,21 @@
 import axios from 'axios';
-import LoginRequest from '../models/loginRequest';
-import SetPasswordRequest from '../models/setPasssordRequest';
-import ResetPasswordRequest from './../models/resetPasswordRequest';
+import Login from '../models/login';
+import SetPassword from '../models/setPasssord';
+import ResetPassword from '../models/resetPassword';
 
-export async function resetPassword(model: ResetPasswordRequest) {
+export async function resetPassword(model: ResetPassword) {
   const url = '/account/password/reset';
 
   await axios.post(url, model);
 }
 
-export async function setPassword(model: SetPasswordRequest) {
+export async function setPassword(model: SetPassword) {
   const url = '/account/password/set';
 
   await axios.post(url, model);
 }
 
-export async function login(model: LoginRequest) {
+export async function login(model: Login) {
   const url = '/account/login';
 
   const response = await axios.post(url, model);

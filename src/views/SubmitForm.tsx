@@ -18,7 +18,7 @@ import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import Power from "../enums/power";
 import SelectOption from "../models/selectOption";
-import SubmitGameResultRequest from "../models/submitGameResultRequest";
+import GameResult from "../models/gameResult";
 import {
   getGameEndTurns,
   getGameEndTypes,
@@ -68,7 +68,7 @@ const SubmitForm = () => {
   const playerId = useSelector(selectUserId);
 
   const handleSubmit = async (values: any, actions: any) => {
-    const request: SubmitGameResultRequest = {
+    const request: GameResult = {
       ...values,
       winningPower: values.winningPower !== "Tie" ? values.winningPower : null,
       playerBlueId:

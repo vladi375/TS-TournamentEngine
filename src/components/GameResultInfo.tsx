@@ -27,7 +27,7 @@ import { useAppSelector } from "../hooks/hooks";
 import ConfirmationAlert from "./ConfirmationAlert";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "./../constants/constants";
-import EditGameResultInfo from "./EditGameResultInfo";
+import EditGameResult from "./EditGameResult";
 
 const GameResult = () => {
   // can be null, add handling for this
@@ -72,7 +72,7 @@ const GameResult = () => {
   return (
     <>
       {editMode ? (
-        <EditGameResultInfo gameResult={result} onUpdated={handleUpdate} />
+        <EditGameResult gameResult={result} onUpdated={handleUpdate} />
       ) : (
         <>
           <Container maxW="3xl" my={14}>
@@ -199,8 +199,8 @@ const GameResult = () => {
                       {result.winningPower ? result.winningPower : "Tie"}
                     </Text>
                   </Flex>
-                  <Text mt={2}>{result.gameEndTurnName}</Text>
-                  <Text mt={2}>{result.gameEndTypeName}</Text>
+                  <Text mt={2}>{result.gameEndTurnName ?? "N/A"}</Text>
+                  <Text mt={2}>{result.gameEndTypeName ?? "N/A"}</Text>
                   <Text mt={2}>
                     {new Date(result.date).toLocaleDateString()}
                   </Text>

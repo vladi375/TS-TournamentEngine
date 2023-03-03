@@ -1,7 +1,10 @@
 import axios from 'axios';
-import SubmitGameResultRequest from './../models/submitGameResultRequest';
+import GameResultInfo from '../models/gameResultInfo';
+import GameResultInfoShort from '../models/gameResultInfoShort';
+import { PagedResult } from '../models/pagedResult';
+import GameResult from '../models/gameResult';
 
-export async function getGameResult(id: number) {
+export async function getGameResult(id: number): Promise<GameResultInfo> {
   const url = `/gameResult/${id}`;
 
   const response = await axios.get(url);
@@ -9,13 +12,13 @@ export async function getGameResult(id: number) {
   return response.data;
 }
 
-export async function submitGameResult(request: SubmitGameResultRequest) {
-    const url = '/gameResult';
+export async function submitGameResult(request: GameResult): Promise<void> {
+  const url = '/gameResult';
 
-    await axios.post(url, request);
+   await axios.post(url, request);
 }
 
-export async function getGameResults(pageIndex: number) {
+export async function getGameResults(pageIndex: number): Promise<PagedResult<GameResultInfoShort>> {
   const url = `/gameResult/?pageIndex=${pageIndex}`;
 
   const response = await axios.get(url);
@@ -23,13 +26,13 @@ export async function getGameResults(pageIndex: number) {
   return response?.data;
 }
 
-export async function deleteGameResult(id: number) {
+export async function deleteGameResult(id: number): Promise<void> {
   const url = `/gameResult/${id}`;
 
   await axios.delete(url);
 }
 
-export async function editGameResult(request: SubmitGameResultRequest) {
+export async function editGameResult(request: GameResult): Promise<void> {
   const url = '/gameResult';
 
   await axios.patch(url, request);

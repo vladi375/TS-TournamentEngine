@@ -26,18 +26,15 @@ import {
   getTournamentTypes,
 } from "../services/lookupService";
 import { EditGameResultValidationSchema } from "../services/validationSchema";
-import GameResultInfo from "./../models/gameResultInfo";
+import GameResultInfo from "../models/gameResultInfo";
 import Error from "./Error";
 
-interface EditGameResultInfoProps {
+interface EditGameResultProps {
   gameResult: GameResultInfo;
   onUpdated: () => void;
 }
 
-const EditGameResultInfo = ({
-  gameResult,
-  onUpdated,
-}: EditGameResultInfoProps) => {
+const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
     new Array<SelectOption>()
   );
@@ -56,13 +53,13 @@ const EditGameResultInfo = ({
 
   useEffect(() => {
     (async () => {
-      const players: SelectOption[] = await getPlayers();
+      const players = await getPlayers();
 
-      const tournaments: SelectOption[] = await getTournamentTypes();
+      const tournaments = await getTournamentTypes();
 
-      const gameEndTurns: SelectOption[] = await getGameEndTurns();
+      const gameEndTurns = await getGameEndTurns();
 
-      const gameEndTypes: SelectOption[] = await getGameEndTypes();
+      const gameEndTypes = await getGameEndTypes();
 
       document.addEventListener(
         "touchstart",
@@ -359,4 +356,4 @@ const EditGameResultInfo = ({
   );
 };
 
-export default EditGameResultInfo;
+export default EditGameResult;
