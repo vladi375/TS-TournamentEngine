@@ -13,21 +13,21 @@ import {
   Select,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import Power from "../enums/power";
-import SelectOption from "../models/selectOption";
-import { editGameResult } from "../services/gameResultService";
+} from '@chakra-ui/react';
+import { Field, Form, Formik } from 'formik';
+import { useEffect, useState } from 'react';
+import Power from '../enums/power';
+import SelectOption from '../models/selectOption';
+import { editGameResult } from '../services/gameResultService';
 import {
   getGameEndTurns,
   getGameEndTypes,
   getPlayers,
   getTournamentTypes,
-} from "../services/lookupService";
-import { EditGameResultValidationSchema } from "../services/validationSchema";
-import GameResultInfo from "../models/gameResultInfo";
-import Error from "./Error";
+} from '../services/lookupService';
+import { EditGameResultValidationSchema } from '../services/validationSchema';
+import GameResultInfo from '../models/gameResultInfo';
+import Error from './Error';
 
 interface EditGameResultProps {
   gameResult: GameResultInfo;
@@ -62,7 +62,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
       const gameEndTypes = await getGameEndTypes();
 
       document.addEventListener(
-        "touchstart",
+        'touchstart',
         (event: TouchEvent) => {
           event.stopPropagation();
         },
@@ -77,13 +77,15 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
   }, []);
 
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const initialValues = {
     ...gameResult,
     winningPower: gameResult.winningPower ? gameResult.winningPower : null,
     date: new Date(gameResult.date).toISOString().substring(0, 10),
   };
+
+  console.log('initialValues', initialValues);
 
   const handleSubmit = async (values: any) => {
     try {
@@ -98,27 +100,27 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
   };
 
   return (
-    <Container maxW={"container.lg"} my={14}>
-      <Flex width="full" align="center" justifyContent="center">
+    <Container maxW={'container.lg'} my={14}>
+      <Flex width='full' align='center' justifyContent='center'>
         <Box
           p={12}
-          maxWidth="700px"
+          maxWidth='700px'
           borderWidth={1}
           borderRadius={8}
-          boxShadow="lg"
+          boxShadow='lg'
         >
-          <Box textAlign="center">
-            <Heading mb={4} size="lg">
+          <Box textAlign='center'>
+            <Heading mb={4} size='lg'>
               Edit game result
             </Heading>
           </Box>
-          <Box textAlign="center" mb={8}>
+          <Box textAlign='center' mb={8}>
             <Text>
               Please use this form to report the result of a game. You can
               report results for games only, where you have participated at.
             </Text>
           </Box>
-          <Box mt={4} textAlign="left">
+          <Box mt={4} textAlign='left'>
             <Formik
               initialValues={initialValues}
               validationSchema={EditGameResultValidationSchema}
@@ -126,7 +128,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
             >
               {(props: any) => (
                 <Form>
-                  <Field name="tournamentId">
+                  <Field name='tournamentId'>
                     {({ form, field }: any) => (
                       <FormControl
                         isInvalid={
@@ -135,7 +137,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                         }
                       >
                         <FormLabel>Select type of the game:</FormLabel>
-                        <Select placeholder="Choose tournament" {...field}>
+                        <Select placeholder='Choose tournament' {...field}>
                           {tournamentsSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -148,7 +150,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="identifier">
+                  <Field name='identifier'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -158,8 +160,8 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       >
                         <FormLabel>Check ID:</FormLabel>
                         <Input
-                          placeholder="Game identifier"
-                          type="text"
+                          placeholder='Game identifier'
+                          type='text'
                           {...field}
                         />
                         <FormErrorMessage>
@@ -168,7 +170,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="playerBlueId">
+                  <Field name='playerBlueId'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -178,7 +180,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                         }
                       >
                         <FormLabel>USA Player:</FormLabel>
-                        <Select placeholder="Select player" {...field}>
+                        <Select placeholder='Select player' {...field}>
                           {playersSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -191,7 +193,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="playerRedId">
+                  <Field name='playerRedId'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -200,7 +202,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                         }
                       >
                         <FormLabel>USSR Player:</FormLabel>
-                        <Select placeholder="Select player" {...field}>
+                        <Select placeholder='Select player' {...field}>
                           {playersSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -213,7 +215,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="winningPower">
+                  <Field name='winningPower'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -224,22 +226,22 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       >
                         <FormLabel>Who was the winning side?</FormLabel>
                         <RadioGroup {...field}>
-                          <Stack spacing={5} direction="row">
+                          <Stack spacing={5} direction='row'>
                             <Radio
                               {...field}
-                              colorScheme="blue"
+                              colorScheme='blue'
                               value={Power.USA}
                             >
                               USA
                             </Radio>
                             <Radio
                               {...field}
-                              colorScheme="red"
+                              colorScheme='red'
                               value={Power.USSR}
                             >
                               USSR
                             </Radio>
-                            <Radio {...field} colorScheme="gray" value="Tie">
+                            <Radio {...field} colorScheme='gray' value='Tie'>
                               Tie
                             </Radio>
                           </Stack>
@@ -250,7 +252,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="gameEndTurnId">
+                  <Field name='gameEndTurnId'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -260,7 +262,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                         }
                       >
                         <FormLabel>When did the game end?</FormLabel>
-                        <Select placeholder="Choose game end turn" {...field}>
+                        <Select placeholder='Choose game end turn' {...field}>
                           {gameEndTurnSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -273,7 +275,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="gameEndTypeId">
+                  <Field name='gameEndTypeId'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -283,7 +285,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                         }
                       >
                         <FormLabel>How did the game end?</FormLabel>
-                        <Select placeholder="Choose game end type" {...field}>
+                        <Select placeholder='Choose game end type' {...field}>
                           {gameEndTypeSelectOptions.map((option, index) => (
                             <option key={index} value={option.id}>
                               {option.value}
@@ -296,7 +298,7 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="date">
+                  <Field name='date'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -304,15 +306,15 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       >
                         <FormLabel>When was the game played?</FormLabel>
                         <Input
-                          placeholder="Select Date"
-                          type="date"
+                          placeholder='Select Date'
+                          type='date'
                           {...field}
                         />
                         <FormErrorMessage>{form.errors?.date}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Field name="linkToVideo">
+                  <Field name='linkToVideo'>
                     {({ form, field }: any) => (
                       <FormControl
                         mt={6}
@@ -322,8 +324,8 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                       >
                         <FormLabel>Link to Video</FormLabel>
                         <Input
-                          placeholder="Link to video"
-                          type="text"
+                          placeholder='Link to video'
+                          type='text'
                           {...field}
                         />
                         <FormErrorMessage>
@@ -333,15 +335,15 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
                     )}
                   </Field>
                   {errorMessage && <Error error={errorMessage}></Error>}
-                  <Box textAlign={"center"}>
+                  <Box textAlign={'center'}>
                     <Button
-                      colorScheme="teal"
-                      variant="outline"
-                      width="36"
-                      textAlign={"center"}
+                      colorScheme='teal'
+                      variant='outline'
+                      width='36'
+                      textAlign={'center'}
                       mt={6}
                       isLoading={loading ? props.isSubmitting : false}
-                      type="submit"
+                      type='submit'
                     >
                       Update
                     </Button>

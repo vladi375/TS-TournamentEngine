@@ -1,19 +1,20 @@
-import { ChakraProvider, theme } from "@chakra-ui/react";
-import { Header } from "./components/Header";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ROUTES } from "./constants";
-import LogInView from "./views/LogInView";
-import SignUpView from "./views/SignUpView";
-import MainView from "./views/MainView";
-import ResetPasswordView from "./views/ResetPasswordView";
-import SetPasswordView from "./views/SetPasswordView";
-import PlayersTable from "./components/PlayersTable";
-import GameResultsView from "./views/GameResultsView";
-import SubmitForm from "./views/SubmitForm";
-import AuthorizedRouteGuard from "./components/guards/AuthorizedRouteGuard";
-import GameResult from "./components/GameResultInfo";
-import ForbiddenPage from "./views/ForbiddenView";
-import AdminRouteGuard from "./components/guards/AdminRouteGuard";
+import { ChakraProvider, theme } from '@chakra-ui/react';
+import { Header } from './components/Header';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ROUTES } from './constants';
+import LogInView from './views/LogInView';
+import SignUpView from './views/SignUpView';
+import MainView from './views/MainView';
+import ResetPasswordView from './views/ResetPasswordView';
+import SetPasswordView from './views/SetPasswordView';
+import PlayersTable from './components/PlayersTable';
+import GameResultsView from './views/GameResultsView';
+import SubmitForm from './views/SubmitForm';
+import AuthorizedRouteGuard from './components/guards/AuthorizedRouteGuard';
+import GameResult from './components/GameResultInfo';
+import ForbiddenPage from './views/ForbiddenView';
+import AdminRouteGuard from './components/guards/AdminRouteGuard';
+import EditPlayerView from './views/EditPlayerView';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -36,6 +37,10 @@ export const App = () => (
         <Route path={ROUTES.GAME_RESULT_INFO} element={<GameResult />} />
         <Route path={ROUTES.GAME_RESULTS} element={<GameResultsView />} />
         <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
+        <Route
+          path={ROUTES.EDIT_PLAYER}
+          element={<AdminRouteGuard element={<EditPlayerView />} />}
+        />
       </Routes>
     </Router>
   </ChakraProvider>

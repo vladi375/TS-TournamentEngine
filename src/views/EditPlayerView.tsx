@@ -1,9 +1,8 @@
-import { Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Flex,
   Box,
-  Text,
   Heading,
   FormControl,
   FormLabel,
@@ -23,42 +22,41 @@ import {
 } from 'formik';
 
 import { SignUpValidationSchema } from '../services/validationSchema';
-import { countries, ROUTES } from '../constants';
+import { countries } from '../constants';
 
-import { onSignUpActionCreator } from '../store/SignUp/signUpActions';
-import {
-  getSignUpErrors,
-  getSignUpLoading,
-  getUserSignedUp,
-} from '../store/SignUp/signUpSelector';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { selectUserIsAdmin } from './../store/userSlice';
+import SelectOption from '../models/selectOption';
+import PlayerModel from '../models/player';
+import { getPlayers } from '../services/lookupService';
 
-export interface SignUpFormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  nickname: string;
-  country: string;
-}
+const EditPlayerView = () => {
+  const [playersSelectOptions, setPlayersSelectOptions] = useState(
+    new Array<SelectOption>()
+  );
 
-const SignUpView = () => {
-  const initialValues: SignUpFormValues = {
+  const initialValues: PlayerModel = {
+    player: '',
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
     nickname: '',
     country: '',
   };
 
-  const dispatch = useAppDispatch();
+  useEffect(() => {
+    (async () => {
+      const players = await getPlayers();
 
-  const isUserSignedUp = useAppSelector(getUserSignedUp);
-  const isSignUpLoading = useAppSelector(getSignUpLoading);
-  const signUpErrors = useAppSelector(getSignUpErrors);
-  const isAdmin = useAppSelector(selectUserIsAdmin);
+      document.addEventListener(
+        'touchstart',
+        (event: TouchEvent) => {
+          event.stopPropagation();
+        },
+        true
+      );
+
+      setPlayersSelectOptions(players);
+    })();
+  }, []);
 
   return (
     <Container maxW={'container.md'} my={14}>
@@ -71,39 +69,42 @@ const SignUpView = () => {
           boxShadow='lg'
         >
           <Box textAlign='center'>
-            {isAdmin ? (
-              <Heading mb={4} size='lg'>
-                Add a new player to the game!
-              </Heading>
-            ) : (
-              <Heading mb={4} size='lg'>
-                Join the game!
-              </Heading>
-            )}
-          </Box>
-          <Box textAlign='center' mb={8}>
-            {isAdmin ? (
-              <Text>
-                Invite a new player so that he could start an amazing journey in
-                tournament and playing against people from all over the world!
-              </Text>
-            ) : (
-              <Text>
-                Create an account to start your amazing journey in tournament
-                and playing against people from all over the world!
-              </Text>
-            )}
+            <Heading mb={12} size='lg'>
+              Edit player's profile information
+            </Heading>
           </Box>
           <Box mt={4} textAlign='left'>
             <Formik
               initialValues={initialValues}
               validationSchema={SignUpValidationSchema}
-              onSubmit={(values, actions) => {
-                dispatch(onSignUpActionCreator(values));
-              }}
+              onSubmit={(values, actions) => {}}
             >
-              {(props: FormikProps<SignUpFormValues>) => (
+              {(props: FormikProps<PlayerModel>) => (
                 <Form>
+                  <Field name='playerBlueId'>
+                    {({ form, field }: any) => (
+                      <FormControl
+                        mt={6}
+                        mb={6}
+                        isInvalid={
+                          form.errors?.playerBlueId &&
+                          form.touched?.playerBlueId
+                        }
+                      >
+                        <FormLabel>Player:</FormLabel>
+                        <Select placeholder='Select player' {...field}>
+                          {playersSelectOptions.map((option, index) => (
+                            <option key={index} value={option.id}>
+                              {option.value}
+                            </option>
+                          ))}
+                        </Select>
+                        <FormErrorMessage>
+                          {form.errors?.playerBlueId}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
                   <Field name='firstName'>
                     {({ form, field }: any) => (
                       <FormControl
@@ -161,26 +162,6 @@ const SignUpView = () => {
                       </FormControl>
                     )}
                   </Field>
-                  <Field name='password'>
-                    {({ form, field }: any) => (
-                      <FormControl
-                        mt={6}
-                        isInvalid={
-                          form.errors?.password && form.touched?.password
-                        }
-                      >
-                        <FormLabel>Password:</FormLabel>
-                        <Input
-                          type='password'
-                          placeholder='*******'
-                          {...field}
-                        />
-                        <FormErrorMessage>
-                          {form.errors?.password}
-                        </FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
                   <Field name='nickname'>
                     {({ form, field }: any) => (
                       <FormControl
@@ -223,11 +204,6 @@ const SignUpView = () => {
                       </FormControl>
                     )}
                   </Field>
-                  {signUpErrors && (
-                    <Box mt={6} textAlign={'center'}>
-                      <Text color={'red.500'}>{signUpErrors}</Text>
-                    </Box>
-                  )}
                   <Box textAlign={'center'}>
                     <Button
                       colorScheme='teal'
@@ -235,10 +211,10 @@ const SignUpView = () => {
                       width='36'
                       textAlign={'center'}
                       mt={6}
-                      isLoading={isSignUpLoading ? props.isSubmitting : false}
+                      //isLoading={isSignUpLoading ? props.isSubmitting : false}
                       type='submit'
                     >
-                      Sign Up
+                      Submit
                     </Button>
                   </Box>
                 </Form>
@@ -247,9 +223,8 @@ const SignUpView = () => {
           </Box>
         </Box>
       </Flex>
-      {isUserSignedUp && <Navigate to={ROUTES.HOME} />}
     </Container>
   );
 };
 
-export default SignUpView;
+export default EditPlayerView;

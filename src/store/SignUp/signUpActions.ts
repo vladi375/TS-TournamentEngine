@@ -1,4 +1,3 @@
-import { signUpFormValues } from './../../views/SignUpView';
 import axios from 'axios';
 import { AppDispatch } from '../store';
 
@@ -6,7 +5,7 @@ export const SIGN_UP_USER_FETCH_REQUEST = 'sign-up/FETCH_REQUEST';
 export const SIGN_UP_USER_FETCH_SUCCESS = 'sign-up/FETCH_SUCCESS';
 export const SIGN_UP_USER_FETCH_ERROR = 'sign-up/FETCH_ERROR';
 
-export const onSignUpActionCreator = (values: signUpFormValues) => {
+export const onSignUpActionCreator = (values: any) => {
   return async (dispatch: AppDispatch) => {
     dispatch({
       type: SIGN_UP_USER_FETCH_REQUEST,
