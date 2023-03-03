@@ -3,7 +3,7 @@ import {
     Container,
     Flex,
     Box,
-    Text,
+    // Text,
     Heading,
     FormControl,
     FormLabel,
@@ -38,9 +38,9 @@ export const LogInView = (props: any) => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const changeRouteToSignUp = () => {
-        navigate(ROUTES.SIGNUP);
-    };
+    // const changeRouteToSignUp = () => {
+    //     navigate(ROUTES.SIGNUP);
+    // };
 
     const changeRouteToResetPassword = () => {
         navigate(ROUTES.PASSWORD_RESET);
@@ -78,7 +78,7 @@ export const LogInView = (props: any) => {
                             Log in to your account
                         </Heading>
                     </Box>
-                    <HStack spacing='4' justify='center'>
+                    {/* <HStack spacing='4' justify='center'>
                         <Text>Don't have an account?</Text>
                         <Button
                             variant='link'
@@ -87,7 +87,7 @@ export const LogInView = (props: any) => {
                         >
                             Sign up
                         </Button>
-                    </HStack>
+                    </HStack> */}
                     <Box mt={4} textAlign='left'>
                         <Formik
                             initialValues={initialValues}
