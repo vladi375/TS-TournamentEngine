@@ -1,13 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import axios from 'axios';
-import signUpReducer from './SignUp/signUpReducer';
 import userReducer from './userSlice';
 
 const createStore = (preloadedState?: any) =>
   configureStore({
     reducer: {
       user: userReducer,
-      signUp: signUpReducer,
     },
     preloadedState,
   });

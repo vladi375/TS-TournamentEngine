@@ -23,7 +23,6 @@ const Paginator: FC<PaginatorProperties> = ({
     }
 
     if (currentPage <= 4) {
-      console.log(currentPage);
       return [..._.range(1, maxPages + 1), DOTS, totalPages];
     }
 

@@ -1,7 +1,14 @@
 import axios from 'axios';
+import SignUp from '../models/signUp';
 import Login from '../models/login';
 import SetPassword from '../models/setPasssord';
 import ResetPassword from '../models/resetPassword';
+
+export async function signUp(model: SignUp) {
+  const url = '/account';
+
+  await axios.post(url, model);
+}
 
 export async function resetPassword(model: ResetPassword) {
   const url = '/account/password/reset';

@@ -1,11 +1,21 @@
 import React from 'react';
-import { Spinner } from '@chakra-ui/react';
+import { Spinner, useColorMode } from '@chakra-ui/react';
 
 import './LoadingSpinner.css';
 
 const LoadingSpinner = () => {
+  const { colorMode } = useColorMode();
+
+  console.log('colorMode', colorMode);
+
   return (
-    <div className='loading-spinner'>
+    <div
+      className='loading-spinner'
+      style={{
+        backgroundColor: colorMode === 'light' ? '#f8f8f8ad' : '#1a202c66',
+      }}
+      // #4a556899
+    >
       <Spinner
         thickness='4px'
         speed='0.65s'

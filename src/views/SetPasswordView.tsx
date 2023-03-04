@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
   Heading,
   FormControl,
@@ -9,19 +9,21 @@ import {
   Box,
   Container,
   Flex,
-} from "@chakra-ui/react";
-import { Formik, Field, Form } from "formik";
-import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import Error from "../components/Error";
-import { ROUTES } from "../constants";
-import { setPassword } from "../services/accountService";
-import { SetPasswordValidationSchema } from "../services/validationSchema";
+} from '@chakra-ui/react';
+import { Formik, Field, Form } from 'formik';
+import React, { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import Error from '../components/Error';
+import { ROUTES } from '../constants';
+import { setPassword } from '../services/accountService';
+import { SetPasswordValidationSchema } from '../services/validationSchema';
+import useFullPageLoader from '../hooks/useFullPageLoader';
 
 const SetPasswordView = () => {
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const [loader, showLoader, hideLoader] = useFullPageLoader();
 
   const [queryParams] = useSearchParams();
 
@@ -32,25 +34,25 @@ const SetPasswordView = () => {
   };
 
   const initialFormValues = {
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   };
 
   const handleSubmit = async (values: any) => {
-    setLoading(true);
+    showLoader();
 
     try {
       await setPassword({
         password: values.password,
-        token: queryParams.get("token") ?? "",
+        token: queryParams.get('token') ?? '',
       });
-      setErrorMessage("");
+      setErrorMessage('');
       setSubmitted(true);
     } catch (error: any) {
       setErrorMessage(error.message);
     }
 
-    setLoading(false);
+    hideLoader();
   };
 
   let content;
@@ -59,14 +61,14 @@ const SetPasswordView = () => {
     content = (
       <>
         <Box>
-          <CheckCircleIcon mb={4} boxSize={8} color="green.500" />
+          <CheckCircleIcon mb={4} boxSize={8} color='green.500' />
         </Box>
-        <Box textAlign="left">
-          <Heading mb={4} size="md">
+        <Box textAlign='left'>
+          <Heading mb={4} size='md'>
             Password reset
           </Heading>
         </Box>
-        <Box textAlign="left">
+        <Box textAlign='left'>
           <Button onClick={navigateToLogin}>Login now</Button>
         </Box>
       </>
@@ -74,20 +76,20 @@ const SetPasswordView = () => {
   } else {
     content = (
       <>
-        <Box textAlign="left">
-          <Heading mb={6} size="md">
+        <Box textAlign='left'>
+          <Heading mb={6} size='md'>
             Set your new password
           </Heading>
         </Box>
-        <Box mt={4} textAlign="left">
+        <Box mt={4} textAlign='left'>
           <Formik
             initialValues={initialFormValues}
             validationSchema={SetPasswordValidationSchema}
-            onSubmit={async (values) => handleSubmit(values)}
+            onSubmit={async values => handleSubmit(values)}
           >
             {(props: any) => (
               <Form>
-                <Field name="password">
+                <Field name='password'>
                   {({ form, field }: any) => (
                     <FormControl
                       mt={6}
@@ -96,14 +98,14 @@ const SetPasswordView = () => {
                       }
                     >
                       <FormLabel>Password:</FormLabel>
-                      <Input type="password" placeholder="*******" {...field} />
+                      <Input type='password' placeholder='*******' {...field} />
                       <FormErrorMessage>
                         {form.errors?.password}
                       </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
-                <Field name="confirmPassword">
+                <Field name='confirmPassword'>
                   {({ form, field }: any) => (
                     <FormControl
                       mt={6}
@@ -113,7 +115,7 @@ const SetPasswordView = () => {
                       }
                     >
                       <FormLabel>Confirm password:</FormLabel>
-                      <Input type="password" placeholder="*******" {...field} />
+                      <Input type='password' placeholder='*******' {...field} />
                       <FormErrorMessage>
                         {form.errors?.confirmPassword}
                       </FormErrorMessage>
@@ -122,15 +124,14 @@ const SetPasswordView = () => {
                 </Field>
 
                 {errorMessage && <Error error={errorMessage}></Error>}
-                <Box textAlign={"center"}>
+                <Box textAlign={'center'}>
                   <Button
-                    colorScheme="teal"
-                    variant="outline"
-                    width="36"
-                    textAlign={"center"}
+                    colorScheme='teal'
+                    variant='outline'
+                    width='36'
+                    textAlign={'center'}
                     mt={10}
-                    isLoading={loading ? props.isSubmitting : false}
-                    type="submit"
+                    type='submit'
                   >
                     Reset password
                   </Button>
@@ -144,19 +145,22 @@ const SetPasswordView = () => {
   }
 
   return (
-    <Container maxW={"container.md"} my={14}>
-      <Flex align="center" justifyContent="center">
-        <Box
-          p={12}
-          width={"500px"}
-          borderWidth={1}
-          borderRadius={8}
-          boxShadow="lg"
-        >
-          {content}
-        </Box>
-      </Flex>
-    </Container>
+    <React.Fragment>
+      <Container maxW={'container.md'} my={14}>
+        <Flex align='center' justifyContent='center'>
+          <Box
+            p={12}
+            width={'500px'}
+            borderWidth={1}
+            borderRadius={8}
+            boxShadow='lg'
+          >
+            {content}
+          </Box>
+        </Flex>
+      </Container>
+      <>{loader}</>
+    </React.Fragment>
   );
 };
 

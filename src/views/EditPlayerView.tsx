@@ -211,7 +211,6 @@ const EditPlayerView = () => {
                       width='36'
                       textAlign={'center'}
                       mt={6}
-                      //isLoading={isSignUpLoading ? props.isSubmitting : false}
                       type='submit'
                     >
                       Submit
