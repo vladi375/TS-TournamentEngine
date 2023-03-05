@@ -78,7 +78,7 @@ const GameResult = () => {
   };
 
   const handleBack = () => {
-    navigate(ROUTES.GAME_RESULTS);
+    navigate(-1);
   };
 
   return (
