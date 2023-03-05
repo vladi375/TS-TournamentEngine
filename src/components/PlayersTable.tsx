@@ -22,7 +22,7 @@ interface PlayerModel {
   id: number;
   firstName: string;
   lastName: string;
-  country: string;
+  countryId: string;
   rating: number;
   rank: number;
 }
@@ -76,7 +76,7 @@ const PlayersTable = () => {
                       </Td>
                       <Td>
                         <CountryFlag
-                          countryCode={player.country}
+                          countryCode={player.countryId}
                           width='1rem'
                         />
                       </Td>
