@@ -4,6 +4,7 @@ import { deleteGameResult, getGameResult } from '../services/gameResultService';
 import GameResultInfo from './../models/gameResultInfo';
 import {
   Box,
+  Button,
   Container,
   Divider,
   Flex,
@@ -76,6 +77,10 @@ const GameResult = () => {
     loadGameResult(+id!);
   };
 
+  const handleBack = () => {
+    navigate(ROUTES.GAME_RESULTS);
+  };
+
   return (
     <>
       {editMode ? (
@@ -85,21 +90,30 @@ const GameResult = () => {
           <Container maxW='3xl' my={14}>
             <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
               {isAdmin && (
-                <HStack justifyContent='flex-end'>
-                  <IconButton
-                    bg='transparent'
-                    onClick={() => setEditMode(true)}
-                    size={'1rem'}
-                    icon={<EditIcon />}
-                    aria-label='Edit Button'
-                  ></IconButton>
-                  <IconButton
-                    bg='transparent'
-                    onClick={() => setDeleteAlert(true)}
-                    size={'1rem'}
-                    icon={<DeleteIcon />}
-                    aria-label='Delete Button'
-                  ></IconButton>
+                <HStack justifyContent='space-between'>
+                  <Button
+                    colorScheme='black'
+                    variant='link'
+                    onClick={handleBack}
+                  >
+                    ⬅ Back
+                  </Button>
+                  <HStack justifyContent='flex-end'>
+                    <IconButton
+                      bg='transparent'
+                      onClick={() => setEditMode(true)}
+                      size={'1rem'}
+                      icon={<EditIcon />}
+                      aria-label='Edit Button'
+                    ></IconButton>
+                    <IconButton
+                      bg='transparent'
+                      onClick={() => setDeleteAlert(true)}
+                      size={'1rem'}
+                      icon={<DeleteIcon />}
+                      aria-label='Delete Button'
+                    ></IconButton>
+                  </HStack>
                 </HStack>
               )}
               <Text fontSize='0.8em' textColor={'gray.400'} textAlign='center'>

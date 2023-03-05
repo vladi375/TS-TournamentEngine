@@ -13,6 +13,7 @@ import {
   Select,
   Stack,
   Text,
+  HStack,
 } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
@@ -108,6 +109,16 @@ const EditGameResult = ({ gameResult, onUpdated }: EditGameResultProps) => {
   return (
     <React.Fragment>
       <Container maxW={'container.lg'} my={14}>
+        <HStack justifyContent='space-between'>
+          <Button
+            colorScheme='black'
+            variant='link'
+            size='lg'
+            onClick={onUpdated}
+          >
+            ⬅ Back
+          </Button>
+        </HStack>
         <Flex width='full' align='center' justifyContent='center'>
           <Box
             p={12}
