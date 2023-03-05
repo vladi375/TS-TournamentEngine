@@ -12,7 +12,7 @@ export const SignUpValidationSchema = Yup.object().shape({
   nickname: Yup.string()
     .max(50, 'Too Long!')
     .required('Playdek Name is required'),
-  country: Yup.string().required('Country is required'),
+  countryId: Yup.string().required('Country is required'),
 });
 
 export const LogInValidationSchema = Yup.object().shape({

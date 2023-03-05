@@ -30,24 +30,16 @@ import { useAppSelector } from '../hooks/hooks';
 import { selectUserIsAdmin } from './../store/userSlice';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import { signUp } from '../services/accountService';
-
-export interface SignUpFormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  nickname: string;
-  country: string;
-}
+import SignUp from '../models/signUp';
 
 const SignUpView = () => {
-  const initialValues: SignUpFormValues = {
+  const initialValues: SignUp = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     nickname: '',
-    country: '',
+    countryId: '',
   };
 
   const [loader, showLoader, hideLoader] = useFullPageLoader();
@@ -56,7 +48,7 @@ const SignUpView = () => {
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (values: SignUpFormValues) => {
+  const handleSubmit = async (values: SignUp) => {
     showLoader();
 
     try {
@@ -113,7 +105,7 @@ const SignUpView = () => {
                   handleSubmit(values);
                 }}
               >
-                {(props: FormikProps<SignUpFormValues>) => (
+                {(props: FormikProps<SignUp>) => (
                   <Form>
                     <Field name='firstName'>
                       {({ form, field }: any) => (
@@ -212,24 +204,24 @@ const SignUpView = () => {
                         </FormControl>
                       )}
                     </Field>
-                    <Field name='country'>
+                    <Field name='countryId'>
                       {({ form, field }: any) => (
                         <FormControl
                           mt={6}
                           isInvalid={
-                            form.errors?.country && form.touched?.country
+                            form.errors?.countryId && form.touched?.countryId
                           }
                         >
                           <FormLabel>Country:</FormLabel>
                           <Select placeholder='Choose a country' {...field}>
-                            {countries.map((country, index) => (
-                              <option key={index} value={country.value}>
-                                {country.text}
+                            {countries.map((countryId, index) => (
+                              <option key={index} value={countryId.value}>
+                                {countryId.text}
                               </option>
                             ))}
                           </Select>
                           <FormErrorMessage>
-                            {form.errors?.country}
+                            {form.errors?.countryId}
                           </FormErrorMessage>
                         </FormControl>
                       )}

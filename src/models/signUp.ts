@@ -4,5 +4,5 @@ export default interface SignUp {
   email: string;
   password: string;
   nickname: string;
-  country: string;
+  countryId: string;
 }
