@@ -3,6 +3,12 @@ import { logout } from '../services/accountService';
 import Role from './../enums/role';
 import { RootState } from './store';
 
+export interface UserState {
+  playerId?: number;
+  name?: string;
+  role?: Role
+}
+
 const initialState: UserState = {};
 
 export const logUserOut = createAsyncThunk("user/logout", async () => {
@@ -42,9 +48,3 @@ export const selectUserIsAdmin = (state: RootState): boolean => state.user.role 
 
 // Export the slice reducer as the default export
 export default userSlice.reducer
-
-export interface UserState {
-    playerId?: number;
-    name?: string;
-    role?: Role
-}

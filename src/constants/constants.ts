@@ -5,6 +5,7 @@ export const ROUTES = {
     ABOUT: '/about',
     CONTACTS: '/contact-us',
     FORBIDDEN: '/forbidden',
+    NOT_FOUND: '/not-found',
     PASSWORD_RESET: '/account/password/reset',
     PASSWORD_SET: '/account/password/set',
     RATING: '/rating',

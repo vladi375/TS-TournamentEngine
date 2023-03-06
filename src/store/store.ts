@@ -1,26 +1,23 @@
 import { configureStore } from '@reduxjs/toolkit';
-import axios from 'axios';
 import userReducer from './userSlice';
+import errorReducer from './errorSlice'
+import { loadCurrentUser } from '../services/accountService';
 
 const createStore = (preloadedState?: any) =>
   configureStore({
     reducer: {
       user: userReducer,
+      error: errorReducer
     },
     preloadedState,
   });
 
 export const defaultStore = createStore();
 
-export const preloadStore = () => {
-  return axios
-    .get('/account/user', {
-      baseURL: process.env.REACT_APP_SERVER_URL,
-      withCredentials: true,
-    })
-    .then(response => {
-      return createStore({ user: { ...response.data } });
-    });
+export const preloadStore = async () => {
+  const user = await loadCurrentUser();
+
+  return createStore({ user: { ...user } })
 };
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

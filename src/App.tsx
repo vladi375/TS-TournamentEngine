@@ -15,11 +15,14 @@ import GameResult from './components/GameResultInfo';
 import ForbiddenPage from './views/ForbiddenView';
 import AdminRouteGuard from './components/guards/AdminRouteGuard';
 import EditPlayerView from './views/EditPlayerView';
+import ErrorHandler from './components/ErrorHandler';
+import NotFoundPage from './views/NotFoundView';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Router>
       <Header />
+      <ErrorHandler />
       <Routes>
         <Route path={ROUTES.HOME} element={<MainView />} />
         <Route path={ROUTES.LOGIN} element={<LogInView />} />
@@ -37,10 +40,12 @@ export const App = () => (
         <Route path={ROUTES.GAME_RESULT_INFO} element={<GameResult />} />
         <Route path={ROUTES.GAME_RESULTS} element={<GameResultsView />} />
         <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
+        <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />
         <Route
           path={ROUTES.EDIT_PLAYER}
           element={<AdminRouteGuard element={<EditPlayerView />} />}
         />
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </Router>
   </ChakraProvider>
