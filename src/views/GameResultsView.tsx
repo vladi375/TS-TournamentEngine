@@ -7,6 +7,7 @@ import { getGameResults } from '../services/gameResultService';
 import Power from '../enums/power';
 import GameResultInfoShort from '../models/gameResultInfoShort';
 import useFullPageLoader from '../hooks/useFullPageLoader';
+import { ROUTES } from './../constants/constants';
 
 const GameResultsView = () => {
   const navigate = useNavigate();
@@ -16,10 +17,16 @@ const GameResultsView = () => {
   const [loader, showLoader, hideLoader] = useFullPageLoader();
 
   const pageParam = searchParams.get('page');
+
   const currentPage = pageParam ? +pageParam : 1;
 
   useEffect(() => {
     (async () => {
+      if (isNaN(currentPage) || currentPage < 1) {
+        navigate(ROUTES.NOT_FOUND);
+        return;
+      }
+
       showLoader();
 
       const results = await getGameResults(currentPage);

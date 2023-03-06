@@ -24,27 +24,33 @@ import {
   EditIcon,
   ExternalLinkIcon,
 } from '@chakra-ui/icons';
-import { useAppSelector } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import ConfirmationAlert from './ConfirmationAlert';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from './../constants/constants';
 import EditGameResult from './EditGameResult';
 import useFullPageLoader from '../hooks/useFullPageLoader';
+import { showNotFoundError } from '../store/errorSlice';
 
 const GameResult = () => {
-  // can be null, add handling for this
   let { id } = useParams();
 
   const [result, setResult] = useState({} as GameResultInfo);
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [loader, showLoader, hideLoader] = useFullPageLoader();
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const isAdmin = useAppSelector(selectUserIsAdmin);
 
   useEffect(() => {
     (async () => {
+      if (!id || isNaN(+id) || +id < 1) {
+        dispatch(showNotFoundError(true));
+        return;
+      }
+
       loadGameResult(+id!);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

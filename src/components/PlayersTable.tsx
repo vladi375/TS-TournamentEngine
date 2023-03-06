@@ -17,6 +17,8 @@ import Paginator from './Paginator/Paginator';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import CountryFlag from './CountryFlag';
 import { useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '../hooks/hooks';
+import { showNotFoundError } from '../store/errorSlice';
 
 interface PlayerModel {
   id: number;
@@ -32,6 +34,7 @@ const PlayersTable = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [loader, showLoader, hideLoader] = useFullPageLoader();
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
 
   const pageParam = searchParams.get('page');
   const currentPage = pageParam ? +pageParam : 1;
@@ -49,6 +52,11 @@ const PlayersTable = () => {
   };
 
   useEffect(() => {
+    if (isNaN(currentPage) || currentPage < 1) {
+      dispatch(showNotFoundError(true));
+      return;
+    }
+
     getPlayersDataAndSetPlayers(currentPage);
     // eslint-disable-next-line
   }, [currentPage]);
