@@ -17,6 +17,7 @@ import AdminRouteGuard from './components/guards/AdminRouteGuard';
 import EditPlayerView from './views/EditPlayerView';
 import ErrorHandler from './components/ErrorHandler';
 import NotFoundPage from './views/NotFoundView';
+import EditGameResult from './components/EditGameResult';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -36,6 +37,10 @@ export const App = () => (
         <Route
           path={ROUTES.SUBMIT_GAME_RESULT}
           element={<AuthorizedRouteGuard element={<SubmitForm />} />}
+        />
+        <Route
+          path={ROUTES.GAME_RESULT_EDIT}
+          element={<AdminRouteGuard element={<EditGameResult />} />}
         />
         <Route path={ROUTES.GAME_RESULT_INFO} element={<GameResult />} />
         <Route path={ROUTES.GAME_RESULTS} element={<GameResultsView />} />

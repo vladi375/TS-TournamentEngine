@@ -7,8 +7,8 @@ export default interface GameResult {
     playerRedId: number,
     tournamentId: number,
     identifier: string,
-    winningPower?: Power,
+    winningPower?: Power | string,
     gameEndTurnId: number,
     gameEndTypeId: number
-    linkToVideo: string
+    linkToVideo?: string
 }

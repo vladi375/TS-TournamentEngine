@@ -11,6 +11,7 @@ export const ROUTES = {
     RATING: '/rating',
     SUBMIT_GAME_RESULT: '/result/submit',
     GAME_RESULTS: '/result',
+    GAME_RESULT_EDIT: '/result/:id/edit',
     GAME_RESULT_INFO: '/result/:id',
     EDIT_PLAYER: 'account/edit',
 };
