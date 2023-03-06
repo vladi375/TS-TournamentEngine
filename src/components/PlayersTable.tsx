@@ -69,16 +69,17 @@ const PlayersTable = () => {
             <Table variant='simple' size='sm'>
               <Thead>
                 <Tr>
+                  <Th>Rank</Th>
                   <Th>Player</Th>
                   <Th>Country</Th>
                   <Th>Rating</Th>
-                  <Th>Rank</Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {data.map((player: PlayerModel) => {
                   return (
                     <Tr key={player.id}>
+                      <Td>{player.rank}.</Td>
                       <Td>
                         {player.firstName} {player.lastName}
                       </Td>
@@ -89,17 +90,16 @@ const PlayersTable = () => {
                         />
                       </Td>
                       <Td>{player.rating}</Td>
-                      <Td>{player.rank}</Td>
                     </Tr>
                   );
                 })}
               </Tbody>
               <Tfoot>
                 <Tr>
+                  <Th>Rank</Th>
                   <Th>Player</Th>
                   <Th>Country</Th>
                   <Th>Rating</Th>
-                  <Th>Rank</Th>
                 </Tr>
               </Tfoot>
             </Table>
