@@ -1,8 +1,8 @@
 export default interface PlayerModel {
-  player: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
   nickname: string;
-  country: string;
+  countryId: string;
 }

@@ -3,6 +3,7 @@ import Login from '../models/login';
 import SetPassword from '../models/setPasssord';
 import ResetPassword from '../models/resetPassword';
 import httpClient from './httpClient';
+import PlayerModel from '../models/player';
 
 export async function signUp(model: SignUp) {
   const url = '/account';
@@ -25,9 +26,23 @@ export async function setPassword(model: SetPassword) {
 export async function loadCurrentUser() {
   const url = '/account/user';
 
-  const response =  await httpClient.get(url);
+  const response = await httpClient.get(url);
 
   return response.data;
+}
+
+export async function loadSelectedPlayer(id: number): Promise<PlayerModel> {
+  const url = `account/${id}`;
+
+  const response = await httpClient.get(url);
+
+  return response.data;
+}
+
+export async function editSelectedPlayer(model: PlayerModel) {
+  const url = '/account';
+
+  await httpClient.patch(url, model);
 }
 
 export async function login(model: Login) {

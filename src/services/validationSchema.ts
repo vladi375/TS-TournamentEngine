@@ -60,3 +60,16 @@ export const EditGameResultValidationSchema = Yup.object().shape({
   ),
   linkToVideo: Yup.string().url('Only valid URL is allowed').nullable(),
 });
+
+export const EditPlayerValidationSchema = Yup.object().shape({
+  firstName: Yup.string()
+    .max(50, 'Too Long!')
+    .required('Firstname is required'),
+  lastName: Yup.string().max(50, 'Too Long!').required('Lastname is required'),
+  email: Yup.string().email('Email is invalid').required('Email is required'),
+  password: Yup.string().min(8, 'Password must be at least 8 characters'),
+  nickname: Yup.string()
+    .max(50, 'Too Long!')
+    .required('Playdek Name is required'),
+  countryId: Yup.string().required('Country is required'),
+});
