@@ -25,7 +25,7 @@ const SetPasswordView = () => {
 
   const [loader, showLoader, hideLoader] = useFullPageLoader();
 
-  const [queryParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const SetPasswordView = () => {
     try {
       await setPassword({
         password: values.password,
-        token: queryParams.get('token') ?? '',
+        token: searchParams.get('token') ?? '',
       });
       setErrorMessage('');
       setSubmitted(true);
