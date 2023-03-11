@@ -79,7 +79,6 @@ export const Header = () => {
                         <MenuItem onClick={() => navigate(ROUTES.SIGNUP)}>
                           Add new player
                         </MenuItem>
-                        <MenuDivider />
                       </>
                     )}
                     {isAdmin && (

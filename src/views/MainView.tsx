@@ -1,5 +1,7 @@
 import React from 'react';
-import { Container, Flex, Text } from '@chakra-ui/react';
+import { Container, Flex, Image } from '@chakra-ui/react';
+
+import mainImage from '../assets/images/ts-main-image.png';
 
 const MainView = () => {
   return (
@@ -10,7 +12,7 @@ const MainView = () => {
         justify={'center'}
         direction={'column'}
       >
-        <Text>'Hello'</Text>
+        <Image src={mainImage} />
       </Flex>
     </Container>
   );
