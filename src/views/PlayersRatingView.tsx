@@ -20,6 +20,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/hooks';
 import { setErrorCode } from '../store/errorSlice';
 import PlayerRatingInfo from '../models/playerRatingInfo';
+import HttpStatusCode from './../enums/httpStatusCode';
 
 const PlayersRatingView = () => {
   const [data, setData] = useState([]);
@@ -45,7 +46,7 @@ const PlayersRatingView = () => {
 
   useEffect(() => {
     if (isNaN(currentPage) || currentPage < 1) {
-      dispatch(setErrorCode(true));
+      dispatch(setErrorCode(HttpStatusCode.NotFound));
       return;
     }
 

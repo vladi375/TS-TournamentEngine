@@ -33,6 +33,7 @@ import { ROUTES } from '../constants/constants';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import { setErrorCode } from '../store/errorSlice';
 import BackNavigationButton from '../components/BackNavigationButton';
+import HttpStatusCode from './../enums/httpStatusCode';
 
 const GameResultInfoView = () => {
   let { id } = useParams();
@@ -48,7 +49,7 @@ const GameResultInfoView = () => {
   useEffect(() => {
     (async () => {
       if (!id || isNaN(+id) || +id < 1) {
-        dispatch(setErrorCode(true));
+        dispatch(setErrorCode(HttpStatusCode.NotFound));
         return;
       }
 

@@ -35,6 +35,7 @@ import { useAppDispatch } from '../hooks/hooks';
 import { setErrorCode } from '../store/errorSlice';
 import GameResult from '../models/gameResult';
 import BackNavigationButton from '../components/BackNavigationButton';
+import HttpStatusCode from './../enums/httpStatusCode';
 
 const EditGameResultView = () => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
@@ -64,7 +65,7 @@ const EditGameResultView = () => {
   useEffect(() => {
     (async () => {
       if (!id || isNaN(+id) || +id < 1) {
-        dispatch(setErrorCode(true));
+        dispatch(setErrorCode(HttpStatusCode.NotFound));
         return;
       }
 

@@ -28,12 +28,6 @@ const ErrorHandler = () => {
           break;
       }
     }
-
-    return () => {
-      if (errorCode) {
-        dispatch(setErrorCode(null));
-      }
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [errorCode]);
 
