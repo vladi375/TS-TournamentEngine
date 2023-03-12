@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import errorReducer from './errorSlice'
-import { loadCurrentUser } from '../services/accountService';
+import { getLoggedUser } from '../services/accountService';
 
 const createStore = (preloadedState?: any) =>
   configureStore({
@@ -15,7 +15,7 @@ const createStore = (preloadedState?: any) =>
 export const defaultStore = createStore();
 
 export const preloadStore = async () => {
-  const user = await loadCurrentUser();
+  const user = await getLoggedUser();
 
   return createStore({ user: { ...user } })
 };

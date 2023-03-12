@@ -1,27 +1,28 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import HttpStatusCode from './../enums/httpStatusCode';
 
 interface ErrorState {
-    notFound: boolean
+    errorCode: HttpStatusCode | null
 }
 
 const initialState: ErrorState = {
-    notFound: false
+    errorCode: null 
 }
 
 const errorSlice = createSlice({
     name: "error",
     initialState,
     reducers: {
-        showNotFoundError(state, action) {
-            state.notFound = action.payload;
+        setErrorCode(state, action) {
+            state.errorCode = action.payload;
         }
     }
 })
 
-export const { showNotFoundError } = errorSlice.actions;
+export const { setErrorCode } = errorSlice.actions;
 
-export const selectShowNotFoundPage = (state: RootState): boolean => state.error.notFound;
+export const selectErrorCode = (state: RootState): HttpStatusCode | null => state.error.errorCode;
 
 export default errorSlice.reducer

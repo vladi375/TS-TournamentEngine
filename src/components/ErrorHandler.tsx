@@ -1,26 +1,41 @@
 import { useSelector } from 'react-redux';
-import { selectShowNotFoundPage, showNotFoundError } from '../store/errorSlice';
+import { selectErrorCode, setErrorCode } from '../store/errorSlice';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../hooks/hooks';
+import HttpStatusCode from './../enums/httpStatusCode';
 
 const ErrorHandler = () => {
-  const goToNotFoundPage = useSelector(selectShowNotFoundPage);
+  const errorCode = useSelector(selectErrorCode);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (goToNotFoundPage) {
-      navigate(ROUTES.NOT_FOUND);
+    if (errorCode) {
+      switch (errorCode) {
+        case HttpStatusCode.NotFound:
+          navigate(ROUTES.NOT_FOUND);
+          break;
+
+        case HttpStatusCode.Forbidden:
+          navigate(ROUTES.FORBIDDEN);
+          break;
+
+        case HttpStatusCode.Unauthorized:
+          navigate(ROUTES.LOGIN);
+          break;
+      }
     }
 
     return () => {
-      dispatch(showNotFoundError(false));
+      if (errorCode) {
+        dispatch(setErrorCode(null));
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [goToNotFoundPage]);
+  }, [errorCode]);
 
   return <></>;
 };

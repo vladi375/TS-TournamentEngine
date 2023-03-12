@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -9,19 +9,12 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  // FormHelperText,
   Input,
   Button,
   Select,
 } from '@chakra-ui/react';
 
-import {
-  Formik,
-  FormikProps,
-  Form,
-  Field,
-  // FieldProps,
-} from 'formik';
+import { Formik, FormikProps, Form, Field } from 'formik';
 
 import { SignUpValidationSchema } from '../services/validationSchema';
 import { countries, ROUTES } from '../constants';
@@ -29,8 +22,9 @@ import { countries, ROUTES } from '../constants';
 import { useAppSelector } from '../hooks/hooks';
 import { selectUserIsAdmin } from './../store/userSlice';
 import useFullPageLoader from '../hooks/useFullPageLoader';
-import { signUp } from '../services/accountService';
 import SignUp from '../models/signUp';
+import { addPlayer } from '../services/playerService';
+import Error from '../components/Error';
 
 const SignUpView = () => {
   const initialValues: SignUp = {
@@ -48,17 +42,19 @@ const SignUpView = () => {
 
   const navigate = useNavigate();
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit = async (values: SignUp) => {
     showLoader();
 
     try {
-      await signUp(values);
-    } catch {
-      // handle error
+      await addPlayer(values);
+      hideLoader();
+      navigate(ROUTES.LOGIN);
+    } catch (error: any) {
+      hideLoader();
+      setErrorMessage(error.message);
     }
-
-    hideLoader();
-    navigate(ROUTES.HOME);
   };
 
   return (
@@ -226,6 +222,7 @@ const SignUpView = () => {
                         </FormControl>
                       )}
                     </Field>
+                    {errorMessage && <Error error={errorMessage}></Error>}
                     <Box textAlign={'center'}>
                       <Button
                         colorScheme='teal'

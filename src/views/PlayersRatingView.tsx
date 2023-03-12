@@ -13,12 +13,12 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { getPlayersData } from '../services/playerService';
-import Paginator from './Paginator/Paginator';
+import Paginator from '../components/Paginator/Paginator';
 import useFullPageLoader from '../hooks/useFullPageLoader';
-import CountryFlag from './CountryFlag';
+import CountryFlag from '../components/CountryFlag';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/hooks';
-import { showNotFoundError } from '../store/errorSlice';
+import { setErrorCode } from '../store/errorSlice';
 
 interface PlayerModel {
   id: number;
@@ -29,7 +29,7 @@ interface PlayerModel {
   rank: number;
 }
 
-const PlayersTable = () => {
+const PlayersRatingView = () => {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [loader, showLoader, hideLoader] = useFullPageLoader();
@@ -53,7 +53,7 @@ const PlayersTable = () => {
 
   useEffect(() => {
     if (isNaN(currentPage) || currentPage < 1) {
-      dispatch(showNotFoundError(true));
+      dispatch(setErrorCode(true));
       return;
     }
 
@@ -116,4 +116,4 @@ const PlayersTable = () => {
   );
 };
 
-export default PlayersTable;
+export default PlayersRatingView;

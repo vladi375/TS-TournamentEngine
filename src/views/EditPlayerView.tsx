@@ -7,77 +7,42 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  // FormHelperText,
   Input,
   Button,
   Select,
 } from '@chakra-ui/react';
 
-import {
-  Formik,
-  FormikProps,
-  Form,
-  Field,
-  // FieldProps,
-} from 'formik';
+import { Formik, FormikProps, Form, Field } from 'formik';
 
 import { EditPlayerValidationSchema } from '../services/validationSchema';
 import { countries } from '../constants';
 
 import SelectOption from '../models/selectOption';
 import { getPlayers } from '../services/lookupService';
-import {
-  editSelectedPlayer,
-  loadSelectedPlayer,
-} from '../services/accountService';
-import PlayerModel from '../models/player';
+import Player from '../models/player';
 import { isEmpty } from 'lodash';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import { useToast } from '@chakra-ui/react';
 import Error from '../components/Error';
-
-interface ChoosePlayerModel {
-  player: string;
-}
-
-interface InitialValuesAfterSelectModel {
-  id: number;
-  player: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  nickname: string;
-  countryId: string;
-}
+import { editPlayer, getPLayer } from '../services/playerService';
 
 const EditPlayerView = () => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
     new Array<SelectOption>()
   );
 
-  const [selectedPlayer, setSelectedPlayer] = useState('');
-  const [loadedPlayer, setLoadedPlayer] = useState({} as PlayerModel);
-  const [initialValuesAfterSelect, setInitialValuesAfterSelect] = useState(
-    {} as InitialValuesAfterSelectModel
-  );
+  const [selectedPlayerId, setSelectedPlayerId] = useState('');
+  const [selectedPlayer, setSelectedPlayer] = useState({} as Player);
   const [errorMessage, setErrorMessage] = useState('');
 
   const [loader, showLoader, hideLoader] = useFullPageLoader();
   const toast = useToast();
 
-  const initialValues: ChoosePlayerModel = {
-    player: '',
-  };
+  const handleSubmit = async (values: Player) => {
+    showLoader();
 
-  const handleChangeSelect = (field: any) => {
-    setSelectedPlayer(field.value);
-  };
-
-  const handleSubmit = async (values: PlayerModel) => {
     try {
-      showLoader();
-
-      await editSelectedPlayer(values);
+      await editPlayer(values);
 
       toast({
         title: 'Changes saved',
@@ -89,7 +54,7 @@ const EditPlayerView = () => {
 
       hideLoader();
     } catch (error: any) {
-      // do error handling
+      hideLoader();
       setErrorMessage(error.message);
 
       toast({
@@ -102,12 +67,6 @@ const EditPlayerView = () => {
     }
   };
 
-  const mapValuesBeforeRequest = (values: InitialValuesAfterSelectModel) => {
-    const { player, ...restValues } = values;
-
-    return restValues;
-  };
-
   useEffect(() => {
     (async () => {
       const players = await getPlayers();
@@ -117,20 +76,21 @@ const EditPlayerView = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEmpty(selectedPlayer)) {
+    if (!isEmpty(selectedPlayerId)) {
       (async () => {
         showLoader();
-        const loadedPlayer = await loadSelectedPlayer(+selectedPlayer!);
+        const loadedPlayer = await getPLayer(+selectedPlayerId!);
         hideLoader();
-        setLoadedPlayer(loadedPlayer);
-        setInitialValuesAfterSelect({
+
+        setSelectedPlayer({
           ...loadedPlayer,
-          player: selectedPlayer,
+          nickname: loadedPlayer.nickname ? loadedPlayer.nickname : '',
+          email: loadedPlayer.email ? loadedPlayer.email : '',
         });
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPlayer]);
+  }, [selectedPlayerId]);
 
   return (
     <React.Fragment>
@@ -149,83 +109,31 @@ const EditPlayerView = () => {
               </Heading>
             </Box>
             <Box mt={4} textAlign='left'>
-              {isEmpty(loadedPlayer) ? (
-                <Formik
-                  key={1}
-                  initialValues={initialValues}
-                  onSubmit={() => {}}
-                >
-                  {(props: FormikProps<ChoosePlayerModel>) => (
-                    <Form>
-                      <Field name='player'>
-                        {({ form, field }: any) => (
-                          <FormControl
-                            mt={6}
-                            mb={6}
-                            isInvalid={
-                              form.errors?.player && form.touched?.player
-                            }
-                          >
-                            <FormLabel>Player:</FormLabel>
-                            <Select
-                              placeholder='Select player'
-                              onChange={handleChangeSelect(field)}
-                              {...field}
-                            >
-                              {playersSelectOptions.map((option, index) => (
-                                <option key={index} value={option.id}>
-                                  {option.value}
-                                </option>
-                              ))}
-                            </Select>
-                            <FormErrorMessage>
-                              {form.errors?.player}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
-                    </Form>
-                  )}
-                </Formik>
-              ) : (
+              <FormLabel>Player to edit:</FormLabel>
+              <Select
+                mb={4}
+                placeholder='Select player'
+                onChange={e => setSelectedPlayerId(e.target.value)}
+                value={selectedPlayerId}
+              >
+                {playersSelectOptions.map((option, index) => (
+                  <option key={index} value={option.id}>
+                    {option.value}
+                  </option>
+                ))}
+              </Select>
+              {selectedPlayer.id && (
                 <Formik
                   key={'2'}
-                  initialValues={initialValuesAfterSelect}
+                  initialValues={selectedPlayer}
                   validationSchema={EditPlayerValidationSchema}
                   onSubmit={(values, actions) => {
-                    handleSubmit(mapValuesBeforeRequest(values));
+                    handleSubmit(values);
                   }}
                   enableReinitialize={true}
                 >
-                  {(props: FormikProps<InitialValuesAfterSelectModel>) => (
+                  {(props: FormikProps<Player>) => (
                     <Form>
-                      <Field name='player'>
-                        {({ form, field }: any) => (
-                          <FormControl
-                            mt={6}
-                            mb={6}
-                            isInvalid={
-                              form.errors?.player && form.touched?.player
-                            }
-                          >
-                            <FormLabel>Player:</FormLabel>
-                            <Select
-                              placeholder='Select player'
-                              onChange={handleChangeSelect(field)}
-                              {...field}
-                            >
-                              {playersSelectOptions.map((option, index) => (
-                                <option key={index} value={option.id}>
-                                  {option.value}
-                                </option>
-                              ))}
-                            </Select>
-                            <FormErrorMessage>
-                              {form.errors?.player}
-                            </FormErrorMessage>
-                          </FormControl>
-                        )}
-                      </Field>
                       <Field name='firstName'>
                         {({ form, field }: any) => (
                           <FormControl
@@ -266,11 +174,7 @@ const EditPlayerView = () => {
                             }
                           >
                             <FormLabel>Email:</FormLabel>
-                            <Input
-                              type='email'
-                              placeholder='test@test.com'
-                              {...field}
-                            />
+                            <Input type='email' {...field} />
                             <FormErrorMessage>
                               {form.errors?.email}
                             </FormErrorMessage>
@@ -315,6 +219,7 @@ const EditPlayerView = () => {
                           </FormControl>
                         )}
                       </Field>
+                      {errorMessage && <Error error={errorMessage}></Error>}
                       <Box textAlign={'center'}>
                         <Button
                           colorScheme='teal'
@@ -333,7 +238,6 @@ const EditPlayerView = () => {
               )}
             </Box>
           </Box>
-          {errorMessage && <Error error={errorMessage}></Error>}
         </Flex>
       </Container>
       <>{loader}</>

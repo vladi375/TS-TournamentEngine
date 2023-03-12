@@ -1,4 +1,4 @@
-export default interface PlayerModel {
+export default interface Player {
   id: number;
   firstName: string;
   lastName: string;

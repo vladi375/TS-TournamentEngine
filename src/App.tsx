@@ -7,17 +7,17 @@ import SignUpView from './views/SignUpView';
 import MainView from './views/MainView';
 import ResetPasswordView from './views/ResetPasswordView';
 import SetPasswordView from './views/SetPasswordView';
-import PlayersTable from './components/PlayersTable';
+import PlayersRatingView from './views/PlayersRatingView';
 import GameResultsView from './views/GameResultsView';
 import SubmitForm from './views/SubmitForm';
 import AuthorizedRouteGuard from './components/guards/AuthorizedRouteGuard';
-import GameResult from './components/GameResultInfo';
+import GameResultInfoView from './views/GameResultInfoView';
 import ForbiddenPage from './views/ForbiddenView';
 import AdminRouteGuard from './components/guards/AdminRouteGuard';
 import EditPlayerView from './views/EditPlayerView';
 import ErrorHandler from './components/ErrorHandler';
 import NotFoundPage from './views/NotFoundView';
-import EditGameResult from './components/EditGameResult';
+import EditGameResultView from './views/EditGameResultView';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
@@ -33,16 +33,19 @@ export const App = () => (
         />
         <Route path={ROUTES.PASSWORD_RESET} element={<ResetPasswordView />} />
         <Route path={ROUTES.PASSWORD_SET} element={<SetPasswordView />} />
-        <Route path={ROUTES.RATING} element={<PlayersTable />} />
+        <Route path={ROUTES.RATING} element={<PlayersRatingView />} />
         <Route
           path={ROUTES.SUBMIT_GAME_RESULT}
           element={<AuthorizedRouteGuard element={<SubmitForm />} />}
         />
         <Route
           path={ROUTES.GAME_RESULT_EDIT}
-          element={<AdminRouteGuard element={<EditGameResult />} />}
+          element={<AdminRouteGuard element={<EditGameResultView />} />}
         />
-        <Route path={ROUTES.GAME_RESULT_INFO} element={<GameResult />} />
+        <Route
+          path={ROUTES.GAME_RESULT_INFO}
+          element={<GameResultInfoView />}
+        />
         <Route path={ROUTES.GAME_RESULTS} element={<GameResultsView />} />
         <Route path={ROUTES.FORBIDDEN} element={<ForbiddenPage />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFoundPage />} />

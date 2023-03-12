@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { showNotFoundError } from '../store/errorSlice';
+import { setErrorCode } from '../store/errorSlice';
 import { store } from './../index';
+import HttpStatusCode from './../enums/httpStatusCode';
 
 
 const httpClient = axios.create({ baseURL: process.env.REACT_APP_SERVER_URL, withCredentials: true});
@@ -11,10 +12,22 @@ httpClient.interceptors.response.use(
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        if(error.response.status === 404)
-          store.dispatch(showNotFoundError(true));
+        switch (error.response.status) {
+          case HttpStatusCode.NotFound:
+            store.dispatch(setErrorCode(HttpStatusCode.NotFound));
+            break;
+
+          case HttpStatusCode.Forbidden:
+            store.dispatch(setErrorCode(HttpStatusCode.Forbidden));
+            break;
+
+          case HttpStatusCode.Unauthorized:
+            store.dispatch(setErrorCode(HttpStatusCode.Unauthorized));
+            break;
         
-        throw new Error(error.response.data.errorMessage);
+          default:
+            throw new Error(error.response.data.errorMessage);
+        }
       } else {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

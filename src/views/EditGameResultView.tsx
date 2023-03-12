@@ -27,15 +27,16 @@ import {
   getTournamentTypes,
 } from '../services/lookupService';
 import { EditGameResultValidationSchema } from '../services/validationSchema';
-import Error from './Error';
+import Error from '../components/Error';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import { isEqual } from 'lodash';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/hooks';
-import { showNotFoundError } from '../store/errorSlice';
+import { setErrorCode } from '../store/errorSlice';
 import GameResult from '../models/gameResult';
+import BackNavigationButton from '../components/BackNavigationButton';
 
-const EditGameResult = () => {
+const EditGameResultView = () => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
     new Array<SelectOption>()
   );
@@ -57,14 +58,13 @@ const EditGameResult = () => {
   const [loader, showLoader, hideLoader] = useFullPageLoader();
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   let { id } = useParams();
 
   useEffect(() => {
     (async () => {
       if (!id || isNaN(+id) || +id < 1) {
-        dispatch(showNotFoundError(true));
+        dispatch(setErrorCode(true));
         return;
       }
 
@@ -107,30 +107,21 @@ const EditGameResult = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (values: any) => {
+    showLoader();
+
     try {
-      showLoader();
       await editGameResult(values);
-      hideLoader();
     } catch (error: any) {
-      // do error handling
       setErrorMessage(error.message);
     }
+
+    hideLoader();
   };
 
   return (
     <React.Fragment>
       {result.id && (
         <Container maxW={'container.lg'} my={14}>
-          <HStack justifyContent='space-between'>
-            <Button
-              colorScheme='black'
-              variant='link'
-              size='lg'
-              onClick={() => navigate(-1)}
-            >
-              ⬅ Back
-            </Button>
-          </HStack>
           <Flex width='full' align='center' justifyContent='center'>
             <Box
               p={12}
@@ -139,6 +130,9 @@ const EditGameResult = () => {
               borderRadius={8}
               boxShadow='lg'
             >
+              <HStack justifyContent='space-between'>
+                <BackNavigationButton />
+              </HStack>
               <Box textAlign='center'>
                 <Heading mb={4} size='lg'>
                   Edit game result
@@ -409,4 +403,4 @@ const EditGameResult = () => {
   );
 };
 
-export default EditGameResult;
+export default EditGameResultView;

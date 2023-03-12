@@ -4,10 +4,9 @@ import {
   deleteGameResult,
   getGameResultInfo,
 } from '../services/gameResultService';
-import GameResultInfo from './../models/gameResultInfo';
+import GameResultInfo from '../models/gameResultInfo';
 import {
   Box,
-  Button,
   Container,
   Divider,
   Flex,
@@ -18,8 +17,8 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import CountryFlag from './CountryFlag';
-import { selectUserIsAdmin } from './../store/userSlice';
+import CountryFlag from '../components/CountryFlag';
+import { selectUserIsAdmin } from '../store/userSlice';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -28,13 +27,14 @@ import {
   ExternalLinkIcon,
 } from '@chakra-ui/icons';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import ConfirmationAlert from './ConfirmationAlert';
+import ConfirmationAlert from '../components/ConfirmationAlert';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from './../constants/constants';
+import { ROUTES } from '../constants/constants';
 import useFullPageLoader from '../hooks/useFullPageLoader';
-import { showNotFoundError } from '../store/errorSlice';
+import { setErrorCode } from '../store/errorSlice';
+import BackNavigationButton from '../components/BackNavigationButton';
 
-const GameResult = () => {
+const GameResultInfoView = () => {
   let { id } = useParams();
 
   const [result, setResult] = useState({} as GameResultInfo);
@@ -48,7 +48,7 @@ const GameResult = () => {
   useEffect(() => {
     (async () => {
       if (!id || isNaN(+id) || +id < 1) {
-        dispatch(showNotFoundError(true));
+        dispatch(setErrorCode(true));
         return;
       }
 
@@ -79,10 +79,6 @@ const GameResult = () => {
     }
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   const handleEdit = (id: number) => {
     navigate(ROUTES.GAME_RESULT_EDIT.replace(':id', id.toString()));
   };
@@ -91,11 +87,9 @@ const GameResult = () => {
     <>
       <Container maxW='3xl' my={14}>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
-          {isAdmin && (
-            <HStack justifyContent='space-between'>
-              <Button colorScheme='black' variant='link' onClick={handleBack}>
-                ⬅ Back
-              </Button>
+          <HStack justifyContent='space-between'>
+            <BackNavigationButton />
+            {isAdmin && (
               <HStack justifyContent='flex-end'>
                 <IconButton
                   bg='transparent'
@@ -112,8 +106,9 @@ const GameResult = () => {
                   aria-label='Delete Button'
                 ></IconButton>
               </HStack>
-            </HStack>
-          )}
+            )}
+          </HStack>
+
           <Text fontSize='0.8em' textColor={'gray.400'} textAlign='center'>
             Game #{result.id}
           </Text>
@@ -246,4 +241,4 @@ const GameResult = () => {
   );
 };
 
-export default GameResult;
+export default GameResultInfoView;

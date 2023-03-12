@@ -5,7 +5,7 @@ import GameResult from '../models/gameResult';
 import httpClient from './httpClient';
 
 export async function getGameResultInfo(id: number): Promise<GameResultInfo> {
-  const url = `/gameResult/${id}`;
+  const url = `/gameResult/${id}/info`;
 
   const response = await httpClient.get(url);
 
@@ -13,7 +13,7 @@ export async function getGameResultInfo(id: number): Promise<GameResultInfo> {
 }
 
 export async function getGameResult(id: number): Promise<GameResult> {
-  const url = `/gameResult/${id}/edit`;
+  const url = `/gameResult/${id}`;
 
   const response = await httpClient.get(url);
 
