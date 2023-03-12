@@ -19,15 +19,7 @@ import CountryFlag from '../components/CountryFlag';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/hooks';
 import { setErrorCode } from '../store/errorSlice';
-
-interface PlayerModel {
-  id: number;
-  firstName: string;
-  lastName: string;
-  countryId: string;
-  rating: number;
-  rank: number;
-}
+import PlayerRatingInfo from '../models/playerRatingInfo';
 
 const PlayersRatingView = () => {
   const [data, setData] = useState([]);
@@ -76,7 +68,7 @@ const PlayersRatingView = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {data.map((player: PlayerModel) => {
+                {data.map((player: PlayerRatingInfo) => {
                   return (
                     <Tr key={player.id}>
                       <Td>{player.rank}.</Td>
