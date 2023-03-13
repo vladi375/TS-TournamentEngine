@@ -31,6 +31,8 @@ import { useSelector } from 'react-redux';
 import { selectUserId } from '../store/userSlice';
 import { submitGameResult } from '../services/gameResultService';
 import useFullPageLoader from '../hooks/useFullPageLoader';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../constants';
 
 const SubmitForm = () => {
   const today = new Date().toISOString().substring(0, 10);
@@ -67,6 +69,7 @@ const SubmitForm = () => {
   );
 
   const playerId = useSelector(selectUserId);
+  const navigate = useNavigate();
 
   const handleSubmit = async (values: any, actions: any) => {
     const request: GameResult = {
@@ -82,8 +85,7 @@ const SubmitForm = () => {
       showLoader();
       await submitGameResult(request);
       hideLoader();
-      setErrorMessage('');
-      actions.resetForm();
+      navigate(ROUTES.GAME_RESULTS);
     } catch (error: any) {
       setErrorMessage(error.message);
     }
