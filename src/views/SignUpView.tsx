@@ -12,9 +12,12 @@ import {
   Input,
   Button,
   Select,
+  InputGroup,
+  InputRightElement,
+  IconButton,
 } from '@chakra-ui/react';
 
-import { Formik, FormikProps, Form, Field } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 import { SignUpValidationSchema } from '../services/validationSchema';
 import { countries, ROUTES } from '../constants';
@@ -22,16 +25,17 @@ import { countries, ROUTES } from '../constants';
 import { useAppSelector } from '../hooks/hooks';
 import { selectUserIsAdmin } from './../store/userSlice';
 import useFullPageLoader from '../hooks/useFullPageLoader';
-import SignUp from '../models/signUp';
 import { addPlayer } from '../services/playerService';
 import Error from '../components/Error';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const SignUpView = () => {
-  const initialValues: SignUp = {
+  const initialValues = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
     nickname: '',
     countryId: '',
   };
@@ -44,11 +48,14 @@ const SignUpView = () => {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async (values: SignUp) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleSubmit = async (values: any) => {
     showLoader();
 
     try {
-      await addPlayer(values);
+      await addPlayer({ ...values });
       hideLoader();
       navigate(ROUTES.LOGIN);
     } catch (error: any) {
@@ -101,7 +108,7 @@ const SignUpView = () => {
                   handleSubmit(values);
                 }}
               >
-                {(props: FormikProps<SignUp>) => (
+                {(props: any) => (
                   <Form>
                     <Field name='firstName'>
                       {({ form, field }: any) => (
@@ -169,13 +176,72 @@ const SignUpView = () => {
                           }
                         >
                           <FormLabel>Password:</FormLabel>
-                          <Input
-                            type='password'
-                            placeholder='*******'
-                            {...field}
-                          />
+                          <InputGroup>
+                            <Input
+                              type={showPassword ? 'text' : 'password'}
+                              placeholder='*******'
+                              {...field}
+                            />
+                            <InputRightElement
+                              children={
+                                <IconButton
+                                  aria-label='show/hide confirm password'
+                                  icon={
+                                    showPassword ? (
+                                      <ViewOffIcon />
+                                    ) : (
+                                      <ViewIcon />
+                                    )
+                                  }
+                                  variant='unstyled'
+                                  onClick={() => setShowPassword(!showPassword)}
+                                />
+                              }
+                            />
+                          </InputGroup>
                           <FormErrorMessage>
                             {form.errors?.password}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                    <Field name='confirmPassword'>
+                      {({ form, field }: any) => (
+                        <FormControl
+                          mt={6}
+                          isInvalid={
+                            form.errors?.confirmPassword &&
+                            form.touched?.confirmPassword
+                          }
+                        >
+                          <FormLabel>Confirm password:</FormLabel>
+                          <InputGroup>
+                            <Input
+                              type={showConfirmPassword ? 'text' : 'password'}
+                              placeholder='*******'
+                              {...field}
+                            />
+                            <InputRightElement
+                              children={
+                                <IconButton
+                                  aria-label='show/hide confirm password'
+                                  icon={
+                                    showConfirmPassword ? (
+                                      <ViewOffIcon />
+                                    ) : (
+                                      <ViewIcon />
+                                    )
+                                  }
+                                  variant='unstyled'
+                                  onClick={() =>
+                                    setShowConfirmPassword(!showConfirmPassword)
+                                  }
+                                />
+                              }
+                            />
+                          </InputGroup>
+                          <FormErrorMessage>
+                            {form.errors?.confirmPassword}
                           </FormErrorMessage>
                         </FormControl>
                       )}

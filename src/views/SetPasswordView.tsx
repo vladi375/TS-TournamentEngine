@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from '@chakra-ui/icons';
+import { CheckCircleIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
   Heading,
   FormControl,
@@ -9,6 +9,9 @@ import {
   Box,
   Container,
   Flex,
+  InputGroup,
+  InputRightElement,
+  IconButton,
 } from '@chakra-ui/react';
 import { Formik, Field, Form } from 'formik';
 import React, { useState } from 'react';
@@ -22,6 +25,8 @@ import useFullPageLoader from '../hooks/useFullPageLoader';
 const SetPasswordView = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [loader, showLoader, hideLoader] = useFullPageLoader();
 
@@ -98,7 +103,25 @@ const SetPasswordView = () => {
                       }
                     >
                       <FormLabel>Password:</FormLabel>
-                      <Input type='password' placeholder='*******' {...field} />
+                      <InputGroup>
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder='*******'
+                          {...field}
+                        />
+                        <InputRightElement
+                          children={
+                            <IconButton
+                              aria-label='show/hide password'
+                              icon={
+                                showPassword ? <ViewOffIcon /> : <ViewIcon />
+                              }
+                              variant='unstyled'
+                              onClick={() => setShowPassword(!showPassword)}
+                            />
+                          }
+                        />
+                      </InputGroup>
                       <FormErrorMessage>
                         {form.errors?.password}
                       </FormErrorMessage>
@@ -115,7 +138,31 @@ const SetPasswordView = () => {
                       }
                     >
                       <FormLabel>Confirm password:</FormLabel>
-                      <Input type='password' placeholder='*******' {...field} />
+                      <InputGroup>
+                        <Input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          placeholder='*******'
+                          {...field}
+                        />
+                        <InputRightElement
+                          children={
+                            <IconButton
+                              aria-label='show/hide confirm password'
+                              icon={
+                                showConfirmPassword ? (
+                                  <ViewOffIcon />
+                                ) : (
+                                  <ViewIcon />
+                                )
+                              }
+                              variant='unstyled'
+                              onClick={() =>
+                                setShowConfirmPassword(!showConfirmPassword)
+                              }
+                            />
+                          }
+                        />
+                      </InputGroup>
                       <FormErrorMessage>
                         {form.errors?.confirmPassword}
                       </FormErrorMessage>
