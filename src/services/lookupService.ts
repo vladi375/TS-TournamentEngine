@@ -28,3 +28,10 @@ export async function getGameEndTypes(): Promise<SelectOption[]> {
 
     return response.data;
 }
+
+export async function getCountries(): Promise<SelectOption[]> {
+    const url = '/lookup/country';
+    const response = await httpClient.get(url);
+
+    return response.data;
+}

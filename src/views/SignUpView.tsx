@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -20,7 +20,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 
 import { SignUpValidationSchema } from '../services/validationSchema';
-import { countries, ROUTES } from '../constants';
+import { ROUTES } from '../constants';
 
 import { useAppSelector } from '../hooks/hooks';
 import { selectUserIsAdmin } from './../store/userSlice';
@@ -28,6 +28,8 @@ import useFullPageLoader from '../hooks/useFullPageLoader';
 import { addPlayer } from '../services/playerService';
 import Error from '../components/Error';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import SelectOption from '../models/selectOption';
+import { getCountries } from '../services/lookupService';
 
 const SignUpView = () => {
   const initialValues = {
@@ -50,6 +52,18 @@ const SignUpView = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [countriesSelectOptions, setCountriesSelectOptions] = useState(
+    new Array<SelectOption>()
+  );
+
+  useEffect(() => {
+    (async () => {
+      const countries = await getCountries();
+
+      setCountriesSelectOptions(countries);
+    })();
+  }, []);
 
   const handleSubmit = async (values: any) => {
     showLoader();
@@ -276,9 +290,9 @@ const SignUpView = () => {
                         >
                           <FormLabel>Country:</FormLabel>
                           <Select placeholder='Choose a country' {...field}>
-                            {countries.map((countryId, index) => (
-                              <option key={index} value={countryId.value}>
-                                {countryId.text}
+                            {countriesSelectOptions.map((country, index) => (
+                              <option key={index} value={country.id}>
+                                {country.value}
                               </option>
                             ))}
                           </Select>

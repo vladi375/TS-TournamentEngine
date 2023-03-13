@@ -15,10 +15,9 @@ import {
 import { Formik, FormikProps, Form, Field } from 'formik';
 
 import { EditPlayerValidationSchema } from '../services/validationSchema';
-import { countries } from '../constants';
 
 import SelectOption from '../models/selectOption';
-import { getPlayers } from '../services/lookupService';
+import { getCountries, getPlayers } from '../services/lookupService';
 import Player from '../models/player';
 import { isEmpty } from 'lodash';
 import useFullPageLoader from '../hooks/useFullPageLoader';
@@ -28,6 +27,10 @@ import { editPlayer, getPLayer } from '../services/playerService';
 
 const EditPlayerView = () => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
+    new Array<SelectOption>()
+  );
+
+  const [countriesSelectOptions, setCountriesSelectOptions] = useState(
     new Array<SelectOption>()
   );
 
@@ -70,7 +73,9 @@ const EditPlayerView = () => {
   useEffect(() => {
     (async () => {
       const players = await getPlayers();
+      const countries = await getCountries();
 
+      setCountriesSelectOptions(countries);
       setPlayersSelectOptions(players);
     })();
   }, []);
@@ -207,9 +212,9 @@ const EditPlayerView = () => {
                           >
                             <FormLabel>Country:</FormLabel>
                             <Select placeholder='Choose a country' {...field}>
-                              {countries.map((country, index) => (
-                                <option key={index} value={country.value}>
-                                  {country.text}
+                              {countriesSelectOptions.map((country, index) => (
+                                <option key={index} value={country.id}>
+                                  {country.value}
                                 </option>
                               ))}
                             </Select>
