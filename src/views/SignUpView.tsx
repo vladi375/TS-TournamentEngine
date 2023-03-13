@@ -181,7 +181,7 @@ const SignUpView = () => {
                         </FormControl>
                       )}
                     </Field>
-                    <Field name='password'>
+                    {/* <Field name='password'>
                       {({ form, field }: any) => (
                         <FormControl
                           mt={6}
@@ -259,7 +259,7 @@ const SignUpView = () => {
                           </FormErrorMessage>
                         </FormControl>
                       )}
-                    </Field>
+                    </Field> */}
                     <Field name='nickname'>
                       {({ form, field }: any) => (
                         <FormControl

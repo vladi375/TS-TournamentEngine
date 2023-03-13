@@ -6,12 +6,12 @@ export const SignUpValidationSchema = Yup.object().shape({
     .required('Firstname is required'),
   lastName: Yup.string().max(50, 'Too Long!').required('Lastname is required'),
   email: Yup.string().email('Email is invalid').required('Email is required'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], "Passwords don't match!")
-    .required('Please confirm your password'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+  // confirmPassword: Yup.string()
+  //   .oneOf([Yup.ref('password'), null], "Passwords don't match!")
+  //   .required('Please confirm your password'),
+  // password: Yup.string()
+  //   .min(8, 'Password must be at least 8 characters')
+  //   .required('Password is required'),
   nickname: Yup.string()
     .max(50, 'Too Long!')
     .required('Playdek Name is required'),
