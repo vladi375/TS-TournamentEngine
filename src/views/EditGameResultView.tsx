@@ -30,12 +30,13 @@ import { EditGameResultValidationSchema } from '../services/validationSchema';
 import Error from '../components/Error';
 import useFullPageLoader from '../hooks/useFullPageLoader';
 import { isEqual } from 'lodash';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../hooks/hooks';
 import { setErrorCode } from '../store/errorSlice';
 import GameResult from '../models/gameResult';
 import BackNavigationButton from '../components/BackNavigationButton';
 import HttpStatusCode from './../enums/httpStatusCode';
+import { ROUTES } from '../constants';
 
 const EditGameResultView = () => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
@@ -59,6 +60,8 @@ const EditGameResultView = () => {
   const [loader, showLoader, hideLoader] = useFullPageLoader();
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   let { id } = useParams();
 
@@ -112,6 +115,7 @@ const EditGameResultView = () => {
 
     try {
       await editGameResult(values);
+      navigate(ROUTES.GAME_RESULT_INFO.replace(':id', id!));
     } catch (error: any) {
       setErrorMessage(error.message);
     }
