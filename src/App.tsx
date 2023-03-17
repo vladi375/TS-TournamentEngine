@@ -18,12 +18,14 @@ import EditPlayerView from './views/EditPlayerView';
 import ErrorHandler from './components/ErrorHandler';
 import NotFoundPage from './views/NotFoundView';
 import EditGameResultView from './views/EditGameResultView';
+import ToastHandler from './components/Toast';
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Router>
       <Header />
       <ErrorHandler />
+      <ToastHandler />
       <Routes>
         <Route path={ROUTES.HOME} element={<MainView />} />
         <Route path={ROUTES.LOGIN} element={<LogInView />} />

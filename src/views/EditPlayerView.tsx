@@ -21,9 +21,10 @@ import { getCountries, getPlayers } from '../services/lookupService';
 import Player from '../models/player';
 import { isEmpty } from 'lodash';
 import useFullPageLoader from '../hooks/useFullPageLoader';
-import { useToast } from '@chakra-ui/react';
 import Error from '../components/Error';
 import { editPlayer, getPLayer } from '../services/playerService';
+import { useAppDispatch } from '../hooks/hooks';
+import { displayToast } from '../store/toastSlice';
 
 const EditPlayerView = () => {
   const [playersSelectOptions, setPlayersSelectOptions] = useState(
@@ -39,34 +40,25 @@ const EditPlayerView = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [loader, showLoader, hideLoader] = useFullPageLoader();
-  const toast = useToast();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (values: Player) => {
     showLoader();
 
     try {
       await editPlayer(values);
-
-      toast({
-        title: 'Changes saved',
-        description: "The player's details updated",
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
-
+      dispatch(
+        displayToast({
+          title: 'Changes saved',
+          description: "The player's details updated",
+          status: 'success',
+        })
+      );
       hideLoader();
+      setErrorMessage('');
     } catch (error: any) {
       hideLoader();
       setErrorMessage(error.message);
-
-      toast({
-        title: 'Saving failed',
-        description: 'An error occurred',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
     }
   };
 

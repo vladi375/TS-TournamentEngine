@@ -8,7 +8,7 @@ const BackNavigationButton = () => {
   return (
     <Button
       leftIcon={<ChevronLeftIcon />}
-      colorScheme='orange'
+      colorScheme='teal'
       variant='link'
       onClick={() => navigate(-1)}
     >
