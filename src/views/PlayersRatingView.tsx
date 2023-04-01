@@ -21,6 +21,7 @@ import { useAppDispatch } from '../hooks/hooks';
 import { setErrorCode } from '../store/errorSlice';
 import PlayerRatingInfo from '../models/playerRatingInfo';
 import HttpStatusCode from './../enums/httpStatusCode';
+import CheckboxFilter from '../components/CheckboxFilter';
 
 const PlayersRatingView = () => {
   const [data, setData] = useState([]);
@@ -57,6 +58,9 @@ const PlayersRatingView = () => {
   return (
     <React.Fragment>
       <Container maxW={'container.lg'} my={14}>
+        <Box p={3} my={3} borderWidth={1} borderRadius={8}>
+          <CheckboxFilter name='country' />
+        </Box>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
           <TableContainer>
             <Table variant='simple' size='sm'>
