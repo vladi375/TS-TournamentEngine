@@ -25,6 +25,7 @@ import CheckboxFilter from '../components/CheckboxFilter';
 
 const PlayersRatingView = () => {
   const [data, setData] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [loader, showLoader, hideLoader] = useFullPageLoader();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,6 +46,10 @@ const PlayersRatingView = () => {
     setSearchParams({ page: pageNumber.toString() });
   };
 
+  const handleChangeFilterType = (countries: any) => {
+    setCountries(countries);
+  };
+
   useEffect(() => {
     if (isNaN(currentPage) || currentPage < 1) {
       dispatch(setErrorCode(HttpStatusCode.NotFound));
@@ -58,8 +63,18 @@ const PlayersRatingView = () => {
   return (
     <React.Fragment>
       <Container maxW={'container.lg'} my={14}>
-        <Box p={3} my={3} borderWidth={1} borderRadius={8}>
-          <CheckboxFilter name='country' />
+        <Box
+          p={3}
+          my={3}
+          borderWidth={1}
+          borderRadius={8}
+          flexDirection={'row'}
+        >
+          <CheckboxFilter
+            name='country'
+            onChangeFilterType={handleChangeFilterType}
+            options={countries}
+          />
         </Box>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
           <TableContainer>
