@@ -10,6 +10,7 @@ import {
   Button,
   Tag,
   TagLabel,
+  Box,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { getCountries } from '../services/lookupService';
@@ -58,6 +59,9 @@ const CheckboxFilter: FC<CheckboxFilterProperties> = ({
     }
   };
 
+  // calculate column count based on total value
+  // pass options in props
+
   useEffect(() => {
     if (name === 'country') {
       (async () => {
@@ -84,25 +88,29 @@ const CheckboxFilter: FC<CheckboxFilterProperties> = ({
         >
           Filter by {name}
         </MenuButton>
-        <MenuList maxW={'container.lg'}>
+        <MenuList
+          maxW={'container.lg'}
+          p={'1rem'}
+          style={{ overflow: 'auto', height: '30rem' }}
+        >
           {options && (
-            <CheckboxGroup>
-              <Grid templateColumns='repeat(5, 1fr)' gap={1} px={2}>
+            <Box style={{ columnCount: 4 }}>
+              <CheckboxGroup>
                 {options.map((option: any) => {
                   return (
-                    <GridItem key={option.id}>
+                    <Box key={option.id}>
                       <Checkbox
                         colorScheme='teal'
-                        value={option.value}
+                        value={option.id}
                         onChange={e => handleOnChange(e, name)}
                       >
                         {option.value}
                       </Checkbox>
-                    </GridItem>
+                    </Box>
                   );
                 })}
-              </Grid>
-            </CheckboxGroup>
+              </CheckboxGroup>
+            </Box>
           )}
         </MenuList>
       </Menu>
