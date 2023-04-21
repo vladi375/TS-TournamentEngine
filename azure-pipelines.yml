@@ -11,10 +11,9 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-    - group: TS.TournamentEngine.Client-Staging
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release') }}:
-    - group: TS.TournamentEngine.Client-Production
+- group: TS.TournamentEngine.Client-Staging
+- group: TS.TournamentEngine.Client-Production
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/release')
 
 steps:
 - script: echo $(ServerUrl)
