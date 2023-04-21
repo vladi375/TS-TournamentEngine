@@ -11,13 +11,13 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
-    - group: TS.TournamentEngine.Client-Staging
-  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release') }}:
-    - group: TS.TournamentEngine.Client-Production
+${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+- group: TS.TournamentEngine.Client-Staging
+${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release') }}:
+- group: TS.TournamentEngine.Client-Production
 
 steps:
-- script: echo $(Build.SourceBranch)
+- script: echo $(groupname)
   displayName: 'PrintSourceBranchName'
 - task: replacetokens@5
   inputs:
