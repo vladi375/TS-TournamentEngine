@@ -12,8 +12,6 @@ pool:
 
 variables:
 - group: TS.TournamentEngine.Client-Staging
-- group: TS.TournamentEngine.Client-Production
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/release')
 
 steps:
 - script: echo $(ServerUrl)
