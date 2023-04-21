@@ -13,6 +13,8 @@ pool:
 variables:
 - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
   - group: TS.TournamentEngine.Client-Staging
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release') }}:
+  - group: TS.TournamentEngine.Client-Release
 
 steps:
 - script: echo $(ServerUrl)
