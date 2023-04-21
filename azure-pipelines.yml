@@ -10,9 +10,6 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-- group: $(if eq(variables['Build.SourceBranch'], 'refs/heads/master') then 'TS-TournamentEngine-Client-Staging' else 'TS-TournamentEngine-Client-Production')
-
 steps:
 - task: NodeTool@0
   inputs:
