@@ -63,19 +63,6 @@ const PlayersRatingView = () => {
   return (
     <React.Fragment>
       <Container maxW={'container.lg'} my={14}>
-        <Box
-          p={3}
-          my={3}
-          borderWidth={1}
-          borderRadius={8}
-          flexDirection={'row'}
-        >
-          <CheckboxFilter
-            name='country'
-            onChangeFilterType={handleChangeFilterType}
-            options={countries}
-          />
-        </Box>
         <Box p={12} borderWidth={1} borderRadius={8} boxShadow='lg'>
           <TableContainer>
             <Table variant='simple' size='sm'>
