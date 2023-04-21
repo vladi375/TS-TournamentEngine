@@ -15,7 +15,7 @@ variables:
   - group: TS.TournamentEngine.Client-Staging
 
 steps:
-- script: echo $(ServerUrl)
+- script: echo $(Build.SourceBranch) echo eq(variables['Build.SourceBranch'], 'ref/heads/master')
   displayName: 'PrintSourceBranchName'
 - task: replacetokens@5
   inputs:
