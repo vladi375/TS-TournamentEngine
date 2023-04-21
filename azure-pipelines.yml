@@ -10,7 +10,27 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+    - group: TS.TournamentEngine.Client-Staging
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/release') }}:
+    - group: TS.TournamentEngine.Client-Production
+
 steps:
+- task: replacetokens@5
+  inputs:
+    targetFiles: '**/*.env'
+    encoding: 'auto'
+    tokenPattern: 'default'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    actionOnNoFiles: 'continue'
+    enableTransforms: false
+    enableRecursion: false
+    useLegacyPattern: false
+    enableTelemetry: true
+
 - task: NodeTool@0
   inputs:
     versionSpec: '18.x'
