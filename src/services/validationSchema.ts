@@ -39,7 +39,7 @@ export const SetPasswordValidationSchema = Yup.object().shape({
 export const SubmitGameResultValidationSchema = Yup.object().shape({
   tournamentId: Yup.number().moreThan(0, 'Please choose tournament'),
   identifier: Yup.string().required('Please add game identifier'),
-  power: Yup.string().required('Please chose your side'),
+  power: Yup.string().required('Please choose your side'),
   opposingPlayer: Yup.number().moreThan(0, 'Please specify your opponent'),
   winningPower: Yup.string().required('Please specify the winning power'),
   gameEndTurnId: Yup.number().moreThan(0, 'Please specify game end turn'),
