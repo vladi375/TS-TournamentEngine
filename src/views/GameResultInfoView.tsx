@@ -213,7 +213,9 @@ const GameResultInfoView = () => {
               </Flex>
               <Text mt={2}>{result.gameEndTurnName ?? 'N/A'}</Text>
               <Text mt={2}>{result.gameEndTypeName ?? 'N/A'}</Text>
-              <Text mt={2}>{new Date(result.date).toLocaleDateString()}</Text>
+              <Text mt={2}>
+                {new Date(result.date).toLocaleDateString('de-DE')}
+              </Text>
               {result.linkToVideo && (
                 <Text mt={2}>
                   <Link href={result.linkToVideo} isExternal>

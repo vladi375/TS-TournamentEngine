@@ -69,7 +69,7 @@ const GameResultsView = () => {
               >
                 <Text>Game #{result.id}</Text>
                 <Text>{result.tournamentName}</Text>
-                <Text>{new Date(result.date).toLocaleDateString()}</Text>
+                <Text>{new Date(result.date).toLocaleDateString('de-DE')}</Text>
               </Flex>
               <Flex>
                 <HStack>
